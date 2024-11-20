@@ -6,7 +6,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 import '../models/EmpPersonalInfo.dart';
-import '../models/EmpWorkInfo.dart';
 import '../models/TicketRequest.dart';
 
 Future<void> fetchEmployeePersonalInfo(BuildContext context) async {
@@ -61,8 +60,6 @@ Future<void> fetchEmployeePersonalInfo(BuildContext context) async {
   }
 }
 
-
-
 String employeeName ='';
 String employeeEmail='' ;
 String contactNo='';
@@ -70,7 +67,6 @@ String position='';
 String badgeno='' ;
 String image='' ;
 String empType ='';
-
 
 
 class RecentLeaveTable extends StatefulWidget {
@@ -110,7 +106,7 @@ class _RecentLeaveTableState extends State<RecentLeaveTable> {
   }
 
   double _getColumnSpacing(Size size) {
-    if (size.width > 1200) return size.width * 0.045; // Desktop
+    if (size.width > 1200) return size.width * 0.043; // Desktop
     if (size.width > 800) return size.width * 0.040; // Tablet
     return size.width * 0.015; // Mobile
   }
@@ -122,9 +118,9 @@ class _RecentLeaveTableState extends State<RecentLeaveTable> {
   }
 
   double _getDataRowHeight(Size size) {
-    if (size.width > 1200) return size.height * 0.048; // Desktop
+    if (size.width > 1200) return size.height * 0.050; // Desktop
     if (size.width > 800) return size.height * 0.043; // Tablet
-    return size.height * 0.038; // Mobile
+    return size.height * 0.039; // Mobile
   }
 
   EdgeInsets _getPadding(Size size) {
@@ -176,7 +172,7 @@ class _RecentLeaveTableState extends State<RecentLeaveTable> {
                   DataCell(
                     Text(
                       leave.fromDate != null
-                          ?  DateFormat('dd/MM/yyyy').format(leave.fromDate!.getDateTimeInUtc().toLocal())
+                          ? DateFormat('dd/MM/yyyy').format(leave.fromDate!.getDateTimeInUtc().toLocal())
                           : '',
                       style: widget.rowTextStyle,
                     ),
@@ -196,7 +192,16 @@ class _RecentLeaveTableState extends State<RecentLeaveTable> {
                     onTap: () => widget.onCellTap(context, index, leave),
                   ),
                   DataCell(
-                    Text(leave.reason ?? '', style: widget.rowTextStyle),
+                    // Allow text to wrap in the Reason column
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: size.width * 0.15), // You can adjust the max width
+                      child: Text(
+                        leave.reason ?? '',
+                        style: widget.rowTextStyle,
+                        softWrap: true, // This ensures wrapping
+                        overflow: TextOverflow.visible, // Avoids overflow
+                      ),
+                    ),
                     onTap: () => widget.onCellTap(context, index, leave),
                   ),
                   DataCell(
@@ -241,7 +246,6 @@ class _RecentLeaveTableState extends State<RecentLeaveTable> {
     return Colors.black;
   }
 }
-
 
 
 class ReviewTicketTable extends StatelessWidget {
@@ -418,4 +422,3 @@ class ReviewTicketTable extends StatelessWidget {
     );
   }
 }
-
