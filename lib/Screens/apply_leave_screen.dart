@@ -36,8 +36,8 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   String badgeno='' ;
   String image='' ;
   String  department='';
-  String  supervisor='';
-  String  manager='';
+  // String  supervisor='';
+  // String  manager='';
   String  managerEmail='';
   String supervisorEmail ='';
 
@@ -45,16 +45,19 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   int sickLeave = 0;
   int totalLeave = 0;
 
+
+
   List<String> _leaveTypes = [];
 
   final List<String> _allLeaveTypes = [
     'Annual Leave',
     'Sick Leave',
     'Hospitalisation Leave',
+    'Compassionate Leave',
     'Marriage Leave',
+    'Compensate Leave',
     'Maternity Leave',
     'Paternity Leave',
-    'Compassionate Leave',
   ];
 
   String? _selectedLeaveType;
@@ -74,6 +77,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   String? ticketError;
   String? reasonError;
   String? certificateError;
+
 
 
 
@@ -98,6 +102,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
     sickLeave = int.tryParse(sickLeaveStr) ?? 0;
     totalLeave = annualLeave + sickLeave;
     print(totalLeave);
+
 
     // Debugging: Check gender value
     gender = (box.read('gender') ?? 'N/A').toLowerCase(); // Normalize gender to lowercase
@@ -291,7 +296,10 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
 
       // Validate Medical Certificate for Sick Leave
       if ((_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') && fileName == null) {
-        certificateError = '* Medical certificate required for ${_selectedLeaveType}';
+        certificateError = '* Medical certificate required for $_selectedLeaveType';
+        isValid = false;
+      } else if (_selectedLeaveType == 'Compensate Leave' && fileName == null) {
+        certificateError = '* Document required for $_selectedLeaveType';
         isValid = false;
       }
     });
@@ -323,13 +331,14 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   String? medicalCertificateUrl;
 
 
-// Method to apply for leave
 
   Future<void> applyForLeave() async {
     final box = GetStorage();
     String empId = box.read('userId') ?? '';
-    String supervisor = box.read('supervisor') ?? 'N/A';
-    String manager = box.read('manager') ?? 'N/A';
+    String supervisorName = box.read('supervisorName') ?? 'N/A';
+    print(supervisorName);
+    String managerName = box.read('managerName') ?? 'N/A';
+    print(managerName);
     String supervisorEmpID = box.read('supervisorEmpID') ?? '';
     String managerEmpID = box.read('managerEmpID') ?? '';
 
@@ -395,8 +404,8 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
         supervisorStatus: 'Pending',
         managerStatus: 'Pending',
         empStatus: 'Pending',
-        supervisorName: supervisor,
-        managerName: manager,
+        supervisorName: supervisorName,
+        managerName: managerName,
       );
 
       // Show confirmation dialog before proceeding
@@ -430,10 +439,10 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                 // Proceed with notifications and storing data in the background
                 Future.microtask(() async {
                   if (applyToList.contains('Supervisor') && supervisorEmpID.isNotEmpty) {
-                    _notifyUser(supervisorEmpID, leaveStatus, supervisor);
+                    _notifyUser(supervisorEmpID, leaveStatus, supervisorName);
                   }
                   if (applyToList.contains('Manager') && managerEmpID.isNotEmpty) {
-                    _notifyUser(managerEmpID, leaveStatus, manager);
+                    _notifyUser(managerEmpID, leaveStatus, managerName);
                   }
 
                   // Send emails and store email notifications
@@ -475,6 +484,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
     }
   }
 
+
 // Helper function to store email notification
   Future<void> storeEmailNotification(String empID, String leaveType, String senderEmail, String recipientEmail) async {
     final emailNotification = EmailNotifi(
@@ -510,11 +520,15 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
 
 
   Future<bool> sendEmail(String managerEmail, String employeeName) async {
-
+    // Create an instance of the AWS SES client
+    final awsCredentials = AwsClientCredentials(
+      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
+      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+    );
 
     final ses = SES(
       region: 'ap-southeast-1', // e.g., 'us-east-1'
-      // credentials: awsCredentials,
+      credentials: awsCredentials,
     );
 
 
@@ -563,7 +577,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
     if (fileExtension != 'jpg' && fileExtension != 'png' && fileExtension != 'pdf') {
       safePrint('Invalid file type selected. Only JPG, PNG, and PDF are allowed.');
       // Optionally show an error message to the user
-       _showErrorDialog(context, 'Invalid file type. Only JPG, PNG, and PDF are allowed.');
+      _showErrorDialog(context, 'Invalid file type. Only JPG, PNG, and PDF are allowed.');
       return;
     }
 
@@ -775,88 +789,91 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               SizedBox(width: size.width * 0.06,),
                               Text('Leave Type :',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black,fontWeight: FontWeight.bold),),
                               SizedBox(width: size.width * 0.023),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Error message for Leave Type
-                            if (leaveTypeError != null)
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 4), // Adjust padding above dropdown
-                                child: Text(
-                                  leaveTypeError!,
-                                  style: TextStyle(color: Colors.red, fontSize: 12), // Error text styling
-                                ),
-                              ),
-
-                            // Leave Type Dropdown
-                            Container(
-                              width: size.width * 0.16,
-                              height: size.height * 0.038,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey.shade400, // Keep the border color gray always
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(2),
-                                color: Colors.white,
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    value: _selectedLeaveType,
-                                    hint: Padding(
-                                      padding: EdgeInsets.only(left: size.width * 0.005),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Error message for Leave Type
+                                  if (leaveTypeError != null)
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 4), // Adjust padding above dropdown
                                       child: Text(
-                                        'Select Type',
-                                        style: TextStyle(fontFamily: 'Inter', fontSize: 15, color: grey),
+                                        leaveTypeError!,
+                                        style: TextStyle(color: Colors.red, fontSize: 12), // Error text styling
                                       ),
                                     ),
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        _selectedLeaveType = newValue;
 
-                                        // Clear the leave type error when a value is selected
-                                        leaveTypeError = null;
-
-                                        // Show the medical certificate error if 'Sick Leave' is selected
-                                        if (_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') {
-                                          certificateError = 'Medical certificate required';
-                                        } else {
-                                          // Clear the certificate error for other leave types
-                                          certificateError = null;
-                                        }
-                                      });
-                                    },
-                                    items: _leaveTypes.map((String leaveType) {
-                                      return DropdownMenuItem<String>(
-                                        value: leaveType,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: size.width * 0.01),
-                                          child: Text(
-                                            leaveType,
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              fontSize: 14,
-                                              color: Colors.black,
+                                  // Leave Type Dropdown
+                                  Container(
+                                    width: size.width * 0.16,
+                                    height: size.height * 0.038,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey.shade400, // Keep the border color gray always
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(2),
+                                      color: Colors.white,
+                                    ),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton<String>(
+                                          value: _selectedLeaveType,
+                                          hint: Padding(
+                                            padding: EdgeInsets.only(left: size.width * 0.005),
+                                            child: Text(
+                                              'Select Type',
+                                              style: TextStyle(fontFamily: 'Inter', fontSize: 15, color: grey),
                                             ),
                                           ),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              _selectedLeaveType = newValue;
+
+                                              // Clear the leave type error when a value is selected
+                                              leaveTypeError = null;
+
+                                              // Check the selected leave type and set the corresponding error message
+                                              if (_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') {
+                                                certificateError = 'Medical certificate required';
+                                              } else if (_selectedLeaveType == 'Compensate Leave') {
+                                                certificateError = 'Document required';
+                                              } else {
+                                                // Clear the certificate error for other leave types
+                                                certificateError = null;
+                                              }
+                                            });
+                                          },
+
+                                          items: _leaveTypes.map((String leaveType) {
+                                            return DropdownMenuItem<String>(
+                                              value: leaveType,
+                                              child: Padding(
+                                                padding: EdgeInsets.only(left: size.width * 0.01),
+                                                child: Text(
+                                                  leaveType,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          icon: Icon(
+                                            Icons.keyboard_arrow_down_outlined,
+                                            size: 25,
+                                            color: Colors.black,
+                                          ),
+                                          isExpanded: true,
                                         ),
-                                      );
-                                    }).toList(),
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down_outlined,
-                                      size: 25,
-                                      color: Colors.black,
+                                      ),
                                     ),
-                                    isExpanded: true,
                                   ),
-                                ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: size.width * 0.047),
+                              SizedBox(width: size.width * 0.047),
                               Text('Leave balance:',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black,fontWeight: FontWeight.bold),),
                               SizedBox(width: size.width * 0.018),
                               webContainer(context, '${totalLeave}'),
@@ -1430,9 +1447,11 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                             // Clear the leave type error when a value is selected
                                             leaveTypeError = null;
 
-                                            // Show the medical certificate error if 'Sick Leave' is selected
+                                            // Check the selected leave type and set the corresponding error message
                                             if (_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') {
                                               certificateError = 'Medical certificate required';
+                                            } else if (_selectedLeaveType == 'Compensate Leave') {
+                                              certificateError = 'Document required';
                                             } else {
                                               // Clear the certificate error for other leave types
                                               certificateError = null;
@@ -1696,72 +1715,72 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                           ],
                         ),
                         SizedBox(height: size.height * 0.010,),
-                       Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             Row(
-                               children: [
-                                 SizedBox(width: size.width * 0.20),
-                                 if (certificateError != null)
-                                   Padding(
-                                     padding: const EdgeInsets.only(left: 16.0, bottom: 4.0), // Adjust padding as needed
-                                     child: Text(
-                                       certificateError!,
-                                       style: TextStyle(
-                                         color: Colors.red,
-                                         fontSize: 11,
-                                       ),
-                                     ),
-                                   ),
-                               ],
-                             ),
-                             Row(
-                               children: [
-                                 SizedBox(width: size.width * 0.205),
-                                 Container(
-                                     width: size.width * 0.22,
-                                     height: size.height * 0.038,
-                                     decoration: BoxDecoration(
-                                         color: Colors.white,
-                                         border: Border.all(color: Colors.grey.shade400,width: 1)
-                                     ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(width: size.width * 0.20),
+                                if (certificateError != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 16.0, bottom: 4.0), // Adjust padding as needed
+                                    child: Text(
+                                      certificateError!,
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 11,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(width: size.width * 0.205),
+                                Container(
+                                    width: size.width * 0.22,
+                                    height: size.height * 0.038,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.grey.shade400,width: 1)
+                                    ),
 
-                                     child: Row(
-                                       mainAxisAlignment: MainAxisAlignment.start,
-                                       children: [
-                                         SizedBox(width: size.width * 0.004),
-                                         Flexible(
-                                           fit: FlexFit.tight, // Allows the text to take available space and adjust
-                                           child: Text(
-                                             fileName != null ? fileName! : 'Upload Medical Certificate',
-                                             style: TextStyle(
-                                               fontFamily: 'Inter',
-                                               fontSize: 10,
-                                               color: fileName != null ? Colors.black : Colors.grey,
-                                             ),
-                                             overflow: TextOverflow.ellipsis, // Truncate text with ellipsis if it's too long
-                                             maxLines: 1, // Limit to one line of text
-                                           ),
-                                         ),
-                                         SizedBox(width: size.width * 0.012),
-                                         Spacer(), // Space between text and icon
-                                         Transform.translate( // Adjust the icon position with Transform.translate
-                                           offset: Offset(1, -3), // Adjust the vertical offset as needed
-                                           child: IconButton(
-                                             onPressed: (){
-                                               uploadImage();
-                                             },
-                                             icon: Icon(Icons.file_upload_outlined,size: 20,color: black,),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(width: size.width * 0.004),
+                                        Flexible(
+                                          fit: FlexFit.tight, // Allows the text to take available space and adjust
+                                          child: Text(
+                                            fileName != null ? fileName! : 'Upload Medical Certificate',
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              fontSize: 10,
+                                              color: fileName != null ? Colors.black : Colors.grey,
+                                            ),
+                                            overflow: TextOverflow.ellipsis, // Truncate text with ellipsis if it's too long
+                                            maxLines: 1, // Limit to one line of text
+                                          ),
+                                        ),
+                                        SizedBox(width: size.width * 0.012),
+                                        Spacer(), // Space between text and icon
+                                        Transform.translate( // Adjust the icon position with Transform.translate
+                                          offset: Offset(1, -3), // Adjust the vertical offset as needed
+                                          child: IconButton(
+                                            onPressed: (){
+                                              uploadImage();
+                                            },
+                                            icon: Icon(Icons.file_upload_outlined,size: 20,color: black,),
 
-                                           ),
-                                         ),
-                                       ],
-                                     )
-                                 )
-                               ],
-                             ),
-                           ],
-                       ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                         SizedBox(height: size.height * 0.020,),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start, // Ensures vertical alignment
@@ -2257,15 +2276,18 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                           // Clear the leave type error when a value is selected
                                           leaveTypeError = null;
 
-                                          // Show the medical certificate error if 'Sick Leave' is selected
+                                          // Check the selected leave type and set the corresponding error message
                                           if (_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') {
                                             certificateError = 'Medical certificate required';
+                                          } else if (_selectedLeaveType == 'Compensate Leave') {
+                                            certificateError = 'Document required';
                                           } else {
                                             // Clear the certificate error for other leave types
                                             certificateError = null;
                                           }
                                         });
                                       },
+
                                       items:
                                       _leaveTypes.map((String leaveType) {
                                         return DropdownMenuItem<String>(
@@ -2565,77 +2587,77 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                           SizedBox(
                             height: size.height * 0.001,
                           ),
-                         Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             Row(
-                               children: [
-                                 SizedBox(width: size.width * 0.24),
-                                 if (certificateError != null)
-                                   Padding(
-                                     padding: const EdgeInsets.only(left: 16.0, bottom: 4.0), // Adjust padding as needed
-                                     child: Text(
-                                       certificateError!,
-                                       style: TextStyle(
-                                         color: Colors.red,
-                                         fontSize: 11,
-                                       ),
-                                     ),
-                                   ),
-                               ],
-                             ),
-                             Row(
-                               children: [
-                                 SizedBox(width: size.width * 0.22),
-                                 Container(
-                                     width: size.width * 0.50,
-                                     height: size.height * 0.038,
-                                     decoration: BoxDecoration(
-                                         color: Colors.white,
-                                         border: Border.all(
-                                             color: Colors.grey.shade400,
-                                             width: 1),
-                                         borderRadius: BorderRadius.circular(4)),
-                                     child: Row(
-                                       mainAxisAlignment: MainAxisAlignment.start,
-                                       children: [
-                                         SizedBox(width: size.width * 0.004),
-                                         Flexible(
-                                           fit: FlexFit.tight, // Allows the text to take available space and adjust
-                                           child: Text(
-                                             fileName != null ? fileName! : 'Upload Medical Certificate',
-                                             style: TextStyle(
-                                               fontFamily: 'Inter',
-                                               fontSize: 10,
-                                               color: fileName != null ? Colors.black : Colors.grey,
-                                             ),
-                                             overflow: TextOverflow.ellipsis, // Truncate text with ellipsis if it's too long
-                                             maxLines: 1, // Limit to one line of text
-                                           ),
-                                         ),
-                                         SizedBox(width: size.width * 0.09),
-                                         Spacer(), // Space between text and icon
-                                         Transform.translate(
-                                           // Adjust the icon position with Transform.translate
-                                           offset: Offset(1,
-                                               -3), // Adjust the vertical offset as needed
-                                           child: IconButton(
-                                             onPressed: () {
-                                               uploadImage();
-                                             },
-                                             icon: Icon(
-                                               Icons.file_upload_outlined,
-                                               size: 16,
-                                               color: black,
-                                             ),
-                                           ),
-                                         ),
-                                       ],
-                                     ))
-                               ],
-                             ),
-                           ],
-                         ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(width: size.width * 0.24),
+                                  if (certificateError != null)
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 16.0, bottom: 4.0), // Adjust padding as needed
+                                      child: Text(
+                                        certificateError!,
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(width: size.width * 0.22),
+                                  Container(
+                                      width: size.width * 0.50,
+                                      height: size.height * 0.038,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: Colors.grey.shade400,
+                                              width: 1),
+                                          borderRadius: BorderRadius.circular(4)),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(width: size.width * 0.004),
+                                          Flexible(
+                                            fit: FlexFit.tight, // Allows the text to take available space and adjust
+                                            child: Text(
+                                              fileName != null ? fileName! : 'Upload Medical Certificate',
+                                              style: TextStyle(
+                                                fontFamily: 'Inter',
+                                                fontSize: 10,
+                                                color: fileName != null ? Colors.black : Colors.grey,
+                                              ),
+                                              overflow: TextOverflow.ellipsis, // Truncate text with ellipsis if it's too long
+                                              maxLines: 1, // Limit to one line of text
+                                            ),
+                                          ),
+                                          SizedBox(width: size.width * 0.09),
+                                          Spacer(), // Space between text and icon
+                                          Transform.translate(
+                                            // Adjust the icon position with Transform.translate
+                                            offset: Offset(1,
+                                                -3), // Adjust the vertical offset as needed
+                                            child: IconButton(
+                                              onPressed: () {
+                                                uploadImage();
+                                              },
+                                              icon: Icon(
+                                                Icons.file_upload_outlined,
+                                                size: 16,
+                                                color: black,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             height: size.height * 0.020,
                           ),

@@ -1269,171 +1269,171 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
-        Dialog(
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          child: Container(
-            //height: size.height * 0.45,
-            width: size.width * 0.76,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.039,
-                    ),
-                    Text(
-                      "Personal Information",
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.12,
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.cancel_outlined,
-                          size: 23,
-                          color: black,
-                        ))
-                  ],
-                ),
-                Divider(),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.088,
-                    ),
-                    Text('Full Name',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black54)),
-                    SizedBox(
-                      width: size.width * 0.023,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.008,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.088,
-                    ),
-                    phonePopContainer(context, fullName, ' ', 11, readonly: true),
-                    // myContainer(context, lastName),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.020,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.088,
-                    ),
-                    Text('Mobile Number',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black54)),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.007,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.089,
-                    ),
-                    phonePopContainer(context, mobile, 'Mobile Number', 11)
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.020,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.088,
-                    ),
-                    Text('Email Address',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black54)),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.007,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.088,
-                    ),
-                    phonePopContainer(context, email, '', 11, readonly: true)
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.020,
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.30,
-                    ),
-                    MaterialButton(
-                      minWidth: size.width * .09,
-                      height: size.height * 0.03,
+      Dialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: Container(
+          //height: size.height * 0.45,
+          width: size.width * 0.76,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.039,
+                  ),
+                  Text(
+                    "Personal Information",
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                        color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.12,
+                  ),
+                  IconButton(
                       onPressed: () {
-                        Get.back(); // Close the dialog
+                        Navigator.pop(context);
                       },
-                      child: Text(
-                        'Save',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                        ),
+                      icon: Icon(
+                        Icons.cancel_outlined,
+                        size: 23,
+                        color: black,
+                      ))
+                ],
+              ),
+              Divider(),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.088,
+                  ),
+                  Text('Full Name',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black54)),
+                  SizedBox(
+                    width: size.width * 0.023,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.008,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.088,
+                  ),
+                  phonePopContainer(context, fullName, ' ', 11, readonly: true),
+                  // myContainer(context, lastName),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.020,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.088,
+                  ),
+                  Text('Mobile Number',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black54)),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.007,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.089,
+                  ),
+                  phonePopContainer(context, mobile, 'Mobile Number', 11)
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.020,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.088,
+                  ),
+                  Text('Email Address',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black54)),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.007,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.088,
+                  ),
+                  phonePopContainer(context, email, '', 11, readonly: true)
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.020,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: size.width * 0.30,
+                  ),
+                  MaterialButton(
+                    minWidth: size.width * .09,
+                    height: size.height * 0.03,
+                    onPressed: () {
+                      Get.back(); // Close the dialog
+                    },
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Inter',
                       ),
-                      color: Colors.yellow,
-                      textColor: Colors.black,
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.040,
-                ),
-              ],
-            ),
+                    color: Colors.yellow,
+                    textColor: Colors.black,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.040,
+              ),
+            ],
           ),
         ),
-        barrierDismissible: false,
-        );
-    }
+      ),
+      barrierDismissible: false,
+    );
+  }
 
   // Request ticket
   Widget requestContainer(BuildContext context, TextEditingController controller, double width, double height, StateSetter setDialogState) {
@@ -2543,7 +2543,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                                   ),
                                   color: Colors.yellow,
                                 ),
-                              SizedBox(height: size.height * 0.1,),
+                                SizedBox(height: size.height * 0.1,),
                               ],
                             ),
                           ],
@@ -2779,11 +2779,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   }
 
   Future<bool> sendTicketEmail(String hrEmail, String employeeName) async {
-
+    // Create an instance of the AWS SES client
+    final awsCredentials = AwsClientCredentials(
+      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
+      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+    );
 
     final ses = SES(
       region: 'ap-southeast-1', // e.g., 'us-east-1'
-      // credentials: awsCredentials,
+      credentials: awsCredentials,
     );
 
 
@@ -3318,10 +3322,19 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(width:size.width *  0.050,),
-                      Text('Reason',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
-                      SizedBox(width:size.width *  0.050,),
-                      Text(leave.reason ?? 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      SizedBox(width: size.width * 0.050),
+                      Text('Reason', style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black)),
+                      SizedBox(width: size.width * 0.050),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            leave.reason ?? 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: size.height * 0.024),
@@ -3332,7 +3345,9 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         minWidth: size.width * 0.062,
                         height: size.height * 0.052,
                         onPressed: ()  {
-                          _showPendingCancelDialog(context, leave,);
+                          Navigator.pop(context);
+                          deleteLeave(leave);
+                          // _showPendingCancelDialog(context, leave,);
                         },
                         child: Text(
                           'Cancel',
@@ -3484,7 +3499,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.057,),
                       Text('Reason',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                       SizedBox(width:size.width *  0.066,),
-                      Text(leave.reason ?? 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            leave.reason ?? 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: size.height * 0.025),
@@ -3776,10 +3800,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(
                         width: size.width * 0.13,
                       ),
-                      Text(
-                        leave.reason ?? 'N/A',
-                        style: TextStyle(
-                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            leave.reason ?? 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -3942,7 +3971,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.050,),
                   Text('Reason',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                   SizedBox(width:size.width *  0.047,),
-                  Text(leave.reason ?? 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        leave.reason ?? 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.020),
@@ -4099,7 +4137,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.061,),
                   Text('Reason',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                   SizedBox(width:size.width *  0.062,),
-                  Text(leave.reason ?? 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        leave.reason ?? 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.015),
@@ -4384,10 +4431,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(
                     width: size.width * 0.13,
                   ),
-                  Text(
-                    leave.reason ?? 'N/A',
-                    style: TextStyle(
-                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        leave.reason ?? 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -4548,7 +4600,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.050,),
                   Text('Reason',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                   SizedBox(width:size.width *  0.045,),
-                  Text(leave.reason ?? 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        leave.reason ?? 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.022),
@@ -4704,7 +4765,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.060,),
                   Text('Reason',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                   SizedBox(width:size.width *  0.062,),
-                  Text(leave.reason ?? 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        leave.reason ?? 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.022),
@@ -4738,294 +4808,299 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       BuildContext context, int rowIndex, LeaveStatus leave) {
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
-        Dialog(
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          child: Container(
-            width: size.width * 0.77,
-            decoration: BoxDecoration(
-              color: dialog,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  height: size.height * 0.057,
-                  color: Colors.yellow,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: size.width * 0.240),
-                      Text(
-                        'Rejected',
-                        style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      SizedBox(width: size.width * 0.150),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.cancel_outlined,
-                            size: 22, color: Colors.black),
-                      ),
-                    ],
+      Dialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: Container(
+          width: size.width * 0.77,
+          decoration: BoxDecoration(
+            color: dialog,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                height: size.height * 0.057,
+                color: Colors.yellow,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: size.width * 0.240),
+                    Text(
+                      'Rejected',
+                      style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    SizedBox(width: size.width * 0.150),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.cancel_outlined,
+                          size: 22, color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: size.height * 0.014),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
                   ),
-                ),
-                SizedBox(height: size.height * 0.014),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Name',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.16,
-                    ),
-                    Text(
-                      employeeName,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.017,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Job Title',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.12,
-                    ),
-                    Text(
-                      Positions,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Badge',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.15,
-                    ),
-                    Text(
-                      badgeno,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Dept/Div',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.12,
-                    ),
-                    Text(
-                      department,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Leave Type',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.079,
-                    ),
-                    Text(
-                      leave.leaveType ?? 'N/A',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Selected Dates',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.017,
-                    ),
-                    Text(
-                      '${DateFormat('dd/MM/yyyy').format(leave.fromDate!.getDateTimeInUtc().toLocal())} to ${DateFormat('dd/MM/yyyy').format(leave.toDate!.getDateTimeInUtc().toLocal())}',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Apply to',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.12,
-                    ),
-                    Text(
-                      leave.applyTo != null && leave.applyTo is List
-                          ? (leave.applyTo as List).join(', ')
-                          : leave.applyTo?.toString() ?? '',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'No of days',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.08,
-                    ),
-                    Text(
-                      '${leave.days ?? 0} days',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Reason',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.13,
-                    ),
-                    Text(
-                      leave.reason ?? 'N/A',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.022),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Comments',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(width: size.width * 0.08),
-                    Container(
-                      width: size.width * 0.395,
-                      height: size.height * 0.050,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: grey, width: 1)),
+                  Text(
+                    'Name',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.16,
+                  ),
+                  Text(
+                    employeeName,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.017,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Job Title',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.12,
+                  ),
+                  Text(
+                    Positions,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Badge',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.15,
+                  ),
+                  Text(
+                    badgeno,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Dept/Div',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.12,
+                  ),
+                  Text(
+                    department,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Leave Type',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.079,
+                  ),
+                  Text(
+                    leave.leaveType ?? 'N/A',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Selected Dates',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.017,
+                  ),
+                  Text(
+                    '${DateFormat('dd/MM/yyyy').format(leave.fromDate!.getDateTimeInUtc().toLocal())} to ${DateFormat('dd/MM/yyyy').format(leave.toDate!.getDateTimeInUtc().toLocal())}',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Apply to',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.12,
+                  ),
+                  Text(
+                    leave.applyTo != null && leave.applyTo is List
+                        ? (leave.applyTo as List).join(', ')
+                        : leave.applyTo?.toString() ?? '',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'No of days',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.08,
+                  ),
+                  Text(
+                    '${leave.days ?? 0} days',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Reason',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.13,
+                  ),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
                       child: Text(
-                        ' ${leave.managerRemarks}' ?? "",
-                        style: TextStyle(
-                            color: black, fontSize: 11, fontFamily: 'Inter'),
+                        leave.reason ?? 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(height: size.height * 0.028),
-              ],
-            ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: size.height * 0.022),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Comments',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(width: size.width * 0.08),
+                  Container(
+                    width: size.width * 0.395,
+                    height: size.height * 0.050,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: grey, width: 1)),
+                    child: Text(
+                      ' ${leave.managerRemarks}' ?? "",
+                      style: TextStyle(
+                          color: black, fontSize: 11, fontFamily: 'Inter'),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: size.height * 0.028),
+            ],
           ),
         ),
-        barrierDismissible: false,
-        );
+      ),
+      barrierDismissible: false,
+    );
   }
 
   //ticket pending dialog
@@ -5105,7 +5180,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.050,),
                       Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                       SizedBox(width:size.width *  0.047,),
-                      Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -5248,7 +5323,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.065,),
                       Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                       SizedBox(width:size.width *  0.068,),
-                      Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                      Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 13,color: black),),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -5323,247 +5398,247 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     String status = 'Pending'; // Initialize the status locally
 
     Get.dialog(
-        StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Container(
-                width: size.width * 0.74,
-                decoration: BoxDecoration(
-                  color: dialog,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      height: size.height * 0.057,
-                      color: Colors.yellow,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: size.width * 0.27),
-                          Text(
-                            'Pending',
-                            style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
-                          SizedBox(width: size.width * 0.099),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.cancel_outlined,
-                                size: 26, color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.014),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.10,
-                        ),
-                        Text(
-                          'Name',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.158,
-                        ),
-                        Text(
-                          employeeName,
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.014,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.10,
-                        ),
-                        Text(
-                          'Badge',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.149,
-                        ),
-                        Text(
-                          badgeno,
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.014,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.10,
-                        ),
-                        Text(
-                          'Dept/Div',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.116,
-                        ),
-                        Text(
-                          department,
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.014,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.10,
-                        ),
-                        Text(
-                          'Position',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.126,
-                        ),
-                        Text(
-                          Positions,
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.014,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.10,
-                        ),
-                        Text(
-                          'Destination',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.078,
-                        ),
-                        Text(
-                          request?.destination ?? 'Unknown',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.014,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.10,
-                        ),
-                        Text(
-                          'Departure Date',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.016,
-                        ),
-                        Text(
-                          request?.departureDate != null
-                              ? DateFormat('dd/MM/yyyy')
-                              .format(request!.departureDate!.getDateTimeInUtc().toLocal())
-                              : 'N/A',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.014,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.10,
-                        ),
-                        Text(
-                          'Arrival Date',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                        SizedBox(
-                          width: size.width * 0.07,
-                        ),
-                        Text(
-                          request!.arrivalDate != null
-                              ? DateFormat('dd/MM/yyyy')
-                              .format(request.arrivalDate!.getDateTimeInUtc().toLocal())
-                              : 'N/A',
-                          style: TextStyle(
-                              fontFamily: 'Inter', fontSize: 13, color: black),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: size.height * 0.024),
-                    Row(
-                      children: [
-                        SizedBox(width: size.width * 0.3),
-                        MaterialButton(
-                          minWidth: size.width * 0.062,
-                          height: size.height * 0.046,
-                          onPressed: () {
-                            _showTicketPendingCancelDialog(context, request);
-                          },
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(fontSize: 14, fontFamily: 'Inter'),
-                          ),
-                          color: Colors.yellow,
-                          textColor: Colors.black,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: size.height * 0.030),
-                  ],
-                ),
+      StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            child: Container(
+              width: size.width * 0.74,
+              decoration: BoxDecoration(
+                color: dialog,
+                borderRadius: BorderRadius.circular(8),
               ),
-            );
-          },
-        ),
-        barrierDismissible: false,
-        );
-    }
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    height: size.height * 0.057,
+                    color: Colors.yellow,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: size.width * 0.27),
+                        Text(
+                          'Pending',
+                          style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                        SizedBox(width: size.width * 0.099),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(Icons.cancel_outlined,
+                              size: 26, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.014),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.10,
+                      ),
+                      Text(
+                        'Name',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.158,
+                      ),
+                      Text(
+                        employeeName,
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.014,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.10,
+                      ),
+                      Text(
+                        'Badge',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.149,
+                      ),
+                      Text(
+                        badgeno,
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.014,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.10,
+                      ),
+                      Text(
+                        'Dept/Div',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.116,
+                      ),
+                      Text(
+                        department,
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.014,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.10,
+                      ),
+                      Text(
+                        'Position',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.126,
+                      ),
+                      Text(
+                        Positions,
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 12, color: black),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.014,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.10,
+                      ),
+                      Text(
+                        'Destination',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.078,
+                      ),
+                      Text(
+                        request?.destination ?? 'Unknown',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.014,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.10,
+                      ),
+                      Text(
+                        'Departure Date',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.016,
+                      ),
+                      Text(
+                        request?.departureDate != null
+                            ? DateFormat('dd/MM/yyyy')
+                            .format(request!.departureDate!.getDateTimeInUtc().toLocal())
+                            : 'N/A',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.014,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.10,
+                      ),
+                      Text(
+                        'Arrival Date',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.07,
+                      ),
+                      Text(
+                        request!.arrivalDate != null
+                            ? DateFormat('dd/MM/yyyy')
+                            .format(request.arrivalDate!.getDateTimeInUtc().toLocal())
+                            : 'N/A',
+                        style: TextStyle(
+                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.024),
+                  Row(
+                    children: [
+                      SizedBox(width: size.width * 0.3),
+                      MaterialButton(
+                        minWidth: size.width * 0.062,
+                        height: size.height * 0.046,
+                        onPressed: () {
+                          _showTicketPendingCancelDialog(context, request);
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(fontSize: 14, fontFamily: 'Inter'),
+                        ),
+                        color: Colors.yellow,
+                        textColor: Colors.black,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.030),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      barrierDismissible: false,
+    );
+  }
 
   //ticket approved dialog
   void _ticketapprovedDialog(BuildContext context,int rowIndex,TicketRequest request ) {
@@ -5638,7 +5713,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.050,),
                   Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                   SizedBox(width:size.width *  0.047,),
-                  Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                  Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -5779,7 +5854,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.065,),
                       Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                       SizedBox(width:size.width *  0.068,),
-                      Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                      Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 13,color: black),),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -5852,243 +5927,243 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       BuildContext context, int rowIndex, TicketRequest request) {
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
-        Dialog(
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          child: Container(
-            width: size.width * 0.75,
-            decoration: BoxDecoration(
-              color: dialog,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  height: size.height * 0.057,
-                  color: Colors.yellow,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: size.width * 0.207),
-                      Text(
-                        'Approved',
-                        style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      SizedBox(width: size.width * 0.090),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.cancel_outlined,
-                            size: 26, color: Colors.black),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: size.height * 0.014),
-                Row(
+      Dialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: Container(
+          width: size.width * 0.75,
+          decoration: BoxDecoration(
+            color: dialog,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                height: size.height * 0.057,
+                color: Colors.yellow,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
+                    SizedBox(width: size.width * 0.207),
                     Text(
-                      'Name',
+                      'Approved',
                       style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
+                          fontFamily: 'Inter',
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
                     ),
-                    SizedBox(
-                      width: size.width * 0.158,
-                    ),
-                    Text(
-                      employeeName,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.1,
-                    ),
-                    Text(
-                      'Badge',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.15,
-                    ),
-                    Text(
-                      badgeno,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.1,
-                    ),
-                    Text(
-                      'Dept/Div',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.117,
-                    ),
-                    Text(
-                      department,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.1,
-                    ),
-                    Text(
-                      'Position',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.126,
-                    ),
-                    Text(
-                      Positions,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.1,
-                    ),
-                    Text(
-                      'Destination',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.077,
-                    ),
-                    Text(
-                      request?.destination ?? 'N/A',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.1,
-                    ),
-                    Text(
-                      'Departure Date',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.019,
-                    ),
-                    Text(
-                      request?.departureDate != null
-                          ? DateFormat('dd/MM/yyyy')
-                          .format(request!.departureDate!.getDateTimeInUtc().toLocal())
-                          : 'N/A',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.1,
-                    ),
-                    Text(
-                      'Arrival Date',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.071,
-                    ),
-                    Text(
-                      request!.arrivalDate != null
-                          ? DateFormat('dd/MM/yyyy')
-                          .format(request.arrivalDate!.getDateTimeInUtc().toLocal())
-                          : 'N/A',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.024),
-                Row(
-                  children: [
-                    SizedBox(width: size.width * 0.26),
-                    MaterialButton(
-                      minWidth: size.width * 0.22,
-                      height: size.height * 0.04,
+                    SizedBox(width: size.width * 0.090),
+                    IconButton(
                       onPressed: () {
-                        _showTicketApprovedCancelDialog(context, request);
+                        Navigator.pop(context);
                       },
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(fontSize: 14, fontFamily: 'Inter'),
-                      ),
-                      color: Colors.yellow,
-                      textColor: Colors.black,
+                      icon: Icon(Icons.cancel_outlined,
+                          size: 26, color: Colors.black),
                     ),
                   ],
                 ),
-                SizedBox(height: size.height * 0.025),
-              ],
-            ),
+              ),
+              SizedBox(height: size.height * 0.014),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Name',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.158,
+                  ),
+                  Text(
+                    employeeName,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.1,
+                  ),
+                  Text(
+                    'Badge',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.15,
+                  ),
+                  Text(
+                    badgeno,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.1,
+                  ),
+                  Text(
+                    'Dept/Div',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.117,
+                  ),
+                  Text(
+                    department,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.1,
+                  ),
+                  Text(
+                    'Position',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.126,
+                  ),
+                  Text(
+                    Positions,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 12, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.1,
+                  ),
+                  Text(
+                    'Destination',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.077,
+                  ),
+                  Text(
+                    request?.destination ?? 'N/A',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.1,
+                  ),
+                  Text(
+                    'Departure Date',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.019,
+                  ),
+                  Text(
+                    request?.departureDate != null
+                        ? DateFormat('dd/MM/yyyy')
+                        .format(request!.departureDate!.getDateTimeInUtc().toLocal())
+                        : 'N/A',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.016,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.1,
+                  ),
+                  Text(
+                    'Arrival Date',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.071,
+                  ),
+                  Text(
+                    request!.arrivalDate != null
+                        ? DateFormat('dd/MM/yyyy')
+                        .format(request.arrivalDate!.getDateTimeInUtc().toLocal())
+                        : 'N/A',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(height: size.height * 0.024),
+              Row(
+                children: [
+                  SizedBox(width: size.width * 0.26),
+                  MaterialButton(
+                    minWidth: size.width * 0.22,
+                    height: size.height * 0.04,
+                    onPressed: () {
+                      _showTicketApprovedCancelDialog(context, request);
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(fontSize: 14, fontFamily: 'Inter'),
+                    ),
+                    color: Colors.yellow,
+                    textColor: Colors.black,
+                  ),
+                ],
+              ),
+              SizedBox(height: size.height * 0.025),
+            ],
           ),
         ),
-        barrierDismissible: false,
-        );
-    }
+      ),
+      barrierDismissible: false,
+    );
+  }
 
   //ticket rejected dialog
   void _ticketrejectedDialog(BuildContext context,int rowIndex,TicketRequest request ) {
@@ -6163,7 +6238,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.050,),
                   Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                   SizedBox(width:size.width *  0.047,),
-                  Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                  Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -6299,7 +6374,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.065,),
                   Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                   SizedBox(width:size.width *  0.068,),
-                  Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                  Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 13,color: black),),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -6367,253 +6442,253 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       BuildContext context, int rowIndex, TicketRequest request) {
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
-        Dialog(
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          child: Container(
-            width: size.width * 0.76,
-            decoration: BoxDecoration(
-              color: dialog,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  height: size.height * 0.057,
-                  color: Colors.yellow,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: size.width * 0.210),
-                      Text(
-                        'Rejected',
-                        style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      SizedBox(width: size.width * 0.14),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.cancel_outlined,
-                            size: 26, color: Colors.black),
-                      ),
-                    ],
+      Dialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: Container(
+          width: size.width * 0.76,
+          decoration: BoxDecoration(
+            color: dialog,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                height: size.height * 0.057,
+                color: Colors.yellow,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: size.width * 0.210),
+                    Text(
+                      'Rejected',
+                      style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    SizedBox(width: size.width * 0.14),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.cancel_outlined,
+                          size: 26, color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: size.height * 0.014),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
                   ),
-                ),
-                SizedBox(height: size.height * 0.014),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Name',
+                  Text(
+                    'Name',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.157,
+                  ),
+                  Text(
+                    employeeName,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Badge',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.15,
+                  ),
+                  Text(
+                    badgeno,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Dept/Div',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.12,
+                  ),
+                  Text(
+                    department,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Position',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.13,
+                  ),
+                  Text(
+                    Positions,
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 12, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Destination',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.078,
+                  ),
+                  Text(
+                    request?.destination ?? 'N/A',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Departure Date',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.016,
+                  ),
+                  Text(
+                    request?.departureDate != null
+                        ? DateFormat('dd/MM/yyyy')
+                        .format(request!.departureDate!.getDateTimeInUtc().toLocal())
+                        : 'N/A',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: size.height * 0.014,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Arrival Date',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.063,
+                  ),
+                  Text(
+                    request!.arrivalDate != null
+                        ? DateFormat('dd/MM/yyyy')
+                        .format(request.arrivalDate!.getDateTimeInUtc().toLocal())
+                        : 'N/A',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                ],
+              ),
+              SizedBox(height: size.height * 0.022),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.10,
+                  ),
+                  Text(
+                    'Remarks',
+                    style: TextStyle(
+                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.11,
+                  ),
+                  Container(
+                    width: size.width * 0.34,
+                    height: size.height * 0.043,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: grey, width: 1)),
+                    child: Text(
+                      request.hrRemarks ?? '',
                       style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
+                          color: black, fontSize: 14, fontFamily: 'Inter'),
                     ),
-                    SizedBox(
-                      width: size.width * 0.157,
-                    ),
-                    Text(
-                      employeeName,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Badge',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.15,
-                    ),
-                    Text(
-                      badgeno,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Dept/Div',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.12,
-                    ),
-                    Text(
-                      department,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Position',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.13,
-                    ),
-                    Text(
-                      Positions,
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Destination',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.078,
-                    ),
-                    Text(
-                      request?.destination ?? 'N/A',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Departure Date',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.016,
-                    ),
-                    Text(
-                      request?.departureDate != null
-                          ? DateFormat('dd/MM/yyyy')
-                          .format(request!.departureDate!.getDateTimeInUtc().toLocal())
-                          : 'N/A',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: size.height * 0.014,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Arrival Date',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.063,
-                    ),
-                    Text(
-                      request!.arrivalDate != null
-                          ? DateFormat('dd/MM/yyyy')
-                          .format(request.arrivalDate!.getDateTimeInUtc().toLocal())
-                          : 'N/A',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.022),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.10,
-                    ),
-                    Text(
-                      'Remarks',
-                      style: TextStyle(
-                          fontFamily: 'Inter', fontSize: 13, color: black),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.11,
-                    ),
-                    Container(
-                      width: size.width * 0.34,
-                      height: size.height * 0.043,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: grey, width: 1)),
-                      child: Text(
-                        request.hrRemarks ?? '',
-                        style: TextStyle(
-                            color: black, fontSize: 14, fontFamily: 'Inter'),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: size.height * 0.030),
-              ],
-            ),
+                  )
+                ],
+              ),
+              SizedBox(height: size.height * 0.030),
+            ],
           ),
         ),
-        barrierDismissible: false,
-        );
-    }
+      ),
+      barrierDismissible: false,
+    );
+  }
 
   // Filtered leave data based on date range
 
@@ -6731,6 +6806,45 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     }
   }
 
+  String normalizeName(String name) {
+    return name.toLowerCase().replaceAll(RegExp(r'\s+'), '');
+  }
+
+  void fetchManagerSupervisorHRInfo(List<EmpPersonalInfo?> employeeInfos, GetStorage box) {
+    String storedManagerName = normalizeName(box.read('manager') ?? '');
+    String storedSupervisorName = normalizeName(box.read('supervisor') ?? '');
+    String storedHRName = normalizeName(box.read('hr') ?? '');
+
+    // Find emails and IDs based on normalized names
+    EmpPersonalInfo? managerInfo = employeeInfos.firstWhere(
+          (e) => e != null && normalizeName(e.name ?? '') == storedManagerName,
+      orElse: () => null,
+    );
+    EmpPersonalInfo? supervisorInfo = employeeInfos.firstWhere(
+          (e) => e != null && normalizeName(e.name ?? '') == storedSupervisorName,
+      orElse: () => null,
+    );
+    EmpPersonalInfo? hrInfo = employeeInfos.firstWhere(
+          (e) => e != null && normalizeName(e.name ?? '') == storedHRName,
+      orElse: () => null,
+    );
+
+    // Store emails and IDs in GetStorage
+    box.write('managerEmail', managerInfo?.email ?? 'N/A');
+    box.write('supervisorEmail', supervisorInfo?.email ?? 'N/A');
+    box.write('hrEmail', hrInfo?.email ?? 'N/A');
+    box.write('managerName', managerInfo?.name ?? 'N/A');
+    box.write('supervisorName', supervisorInfo?.name ?? 'N/A');
+    box.write('hrName', hrInfo?.name ?? 'N/A');
+    box.write('supervisorEmpID', supervisorInfo?.empID ?? '');
+    box.write('managerEmpID', managerInfo?.empID ?? '');
+
+    // Debug print
+    print('${managerInfo?.name ?? 'N/A'}: ${managerInfo?.email ?? 'N/A'} : ${managerInfo?.empID ?? 'N/A'} ');
+    print('${supervisorInfo?.name ?? 'N/A'}: ${supervisorInfo?.email ?? 'N/A'} :${supervisorInfo?. empID?? 'N/A'} ');
+    print('${hrInfo?.name ?? 'N/A'}: ${hrInfo?.email ?? 'N/A'}');
+  }
+
   Future<void> fetchEmployeePersonalInfo(BuildContext context) async {
     try {
       final box = GetStorage();
@@ -6749,14 +6863,12 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       List<EmpPersonalInfo?> employeeInfos = (response.data?.items as List?)?.cast<EmpPersonalInfo?>() ?? [];
 
       if (employeeInfos.isNotEmpty) {
-        // Retrieve current employee's personal info
         EmpPersonalInfo? employeeInfo = employeeInfos.firstWhere(
               (e) => e?.empID == empId,
           orElse: () => null,
         );
-        print(employeeInfo);
+
         if (employeeInfo != null) {
-          // Store the fetched employee data in GetStorage
           String profilePhotoUrl = employeeInfo.profilePhoto ?? '';
           box.write('name', employeeInfo.name ?? 'N/A');
           box.write('email', employeeInfo.email ?? 'N/A');
@@ -6775,40 +6887,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
             empType = box.read('emptype') ?? 'N/A';
           });
 
-          // Get manager, supervisor, and HR names
-          String managerName = box.read('manager') ?? 'N/A';
-          String supervisorName = box.read('supervisor') ?? 'N/A';
-          String hrName = box.read('hr') ?? 'N/A';
-
-          // Find their emails in employeeInfos
-          String? managerEmail = employeeInfos.firstWhere((e) => e?.name == managerName, orElse: () => null)?.email;
-          String? supervisorEmail = employeeInfos.firstWhere((e) => e?.name == supervisorName, orElse: () => null)?.email;
-          String? hrEmail = employeeInfos.firstWhere((e) => e?.name == hrName, orElse: () => null)?.email;
-
-          String? supervisorEmpID = employeeInfos.firstWhere((e) => e?.name == supervisorName, orElse: () => null)?.empID;
-          String? managerEmpID = employeeInfos.firstWhere((e) => e?.name == managerName, orElse: () => null)?.empID;
-
-          // Store emails in GetStorage
-          box.write('managerEmail', managerEmail ?? 'N/A');
-          box.write('supervisorEmail', supervisorEmail ?? 'N/A');
-          box.write('hrEmail', hrEmail ?? 'N/A');
-          box.write('supervisorEmpID', supervisorEmpID ?? '');
-          box.write('managerEmpID', managerEmpID ?? '');
-
-          setState(() {
-            managerEmail = box.read('managerEmail') ?? 'N/A';
-            supervisorEmail = box.read('supervisorEmail') ?? 'N/A';
-            hrEmail = box.read('hrEmail') ?? 'N/A';
-            managerEmpID = box.read('managerEmpID') ?? 'N/A';
-            supervisorEmpID = box.read('supervisorEmpID') ?? 'N/A';
-          });
-
-          print('${managerName}: $managerEmail');
-          print('${supervisorName}: $supervisorEmail');
-          print('${hrName}: $hrEmail');
-          print('${managerName}: $managerEmpID');
-          print('${supervisorName}: $supervisorEmpID');
-
+          // Fetch manager, supervisor, and HR details
+          fetchManagerSupervisorHRInfo(employeeInfos, box);
         } else {
           print('No matching employee data found for user: $empId');
         }
@@ -6819,6 +6899,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       print('Failed to fetch employee personal info: $e');
     }
   }
+
 
 
   Future<void> fetchEmailNotifications(BuildContext context) async {
@@ -6970,11 +7051,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   //Notification part for cancelling leave and ticket
 
   Future<bool> sendCancelEmail(String managerEmail, String employeeName) async {
-
+    // Create an instance of the AWS SES client
+    final awsCredentials = AwsClientCredentials(
+      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
+      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+    );
 
     final ses = SES(
       region: 'ap-southeast-1', // e.g., 'us-east-1'
-      // credentials: awsCredentials,
+      credentials: awsCredentials,
     );
 
 
@@ -7002,11 +7087,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   }
 
   Future<bool> ticketCancelEmail(String hrEmail, String employeeName) async {
-
+    // Create an instance of the AWS SES client
+    final awsCredentials = AwsClientCredentials(
+      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
+      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+    );
 
     final ses = SES(
       region: 'ap-southeast-1', // e.g., 'us-east-1'
-      // credentials: awsCredentials,
+      credentials: awsCredentials,
     );
 
 
@@ -7081,11 +7170,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
 
   Future<bool> approvedCancelEmail(String managerEmail, String employeeName) async {
-
+    // Create an instance of the AWS SES client
+    final awsCredentials = AwsClientCredentials(
+      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
+      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+    );
 
     final ses = SES(
       region: 'ap-southeast-1', // e.g., 'us-east-1'
-      // credentials: awsCredentials,
+      credentials: awsCredentials,
     );
 
 
@@ -7113,15 +7206,19 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   }
 
   Future<bool> ticketApprovedCancelEmail(String hrEmail , String employeeName) async {
-
+    // Create an instance of the AWS SES client
+    final awsCredentials = AwsClientCredentials(
+      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
+      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+    );
 
     final ses = SES(
       region: 'ap-southeast-1', // e.g., 'us-east-1'
-      // credentials: awsCredentials,
+      credentials: awsCredentials,
     );
 
 
-    final messageBody = 'Employee $employeeName has canceled their approved ticket.\n'
+    final messageBody = 'Employee $employeeName has canceled their approved leave.\n'
         'You can view the details here: https://dev.dxtlxvdrz6jj5.amplifyapp.com';
     final subject = 'Approved ticket Cancellation Notification';
 
@@ -7483,7 +7580,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     int totalPaternityLeave = int.tryParse(paterLeave) ?? 2;
     int totalMarriageLeave = int.tryParse(mrageLeave) ?? 1;
     int totalCompassionateLeave = int.tryParse(compasLeave) ?? 2;
-    int unpaidAuthorize=0;
+    int unpaidAuthorize = 0;
 
     int annualLeaveTaken = 0;
     int sickLeaveTaken = 0;
@@ -7508,9 +7605,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
     for (var leave in leaveList) {
       if (leave.empStatus == 'Pending') {
-        // Condition for when the leave is pending and the supervisor and manager are both pending
+        String effectiveLeaveType = leave.leaveType;
+
+        // Compassionate leave handling when compassionate leave is exhausted
+        if (compassionateLeaveRemaining <= 0 && leave.leaveType == 'Compassionate Leave') {
+          // Treat exhausted compassionate leave as annual leave
+          effectiveLeaveType = 'Annual Leave';
+        }
+
         if (leave.supervisorStatus == 'Pending' && leave.managerStatus == 'Pending') {
-          switch (leave.leaveType) {
+          switch (effectiveLeaveType) {
             case 'Annual Leave':
               annualLeaveRequests++;
               break;
@@ -7533,9 +7637,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           }
         }
 
-        // Handle when the leave status is cancelled and supervisor and manager are pending
         if (leave.empStatus == 'Cancelled' && leave.supervisorStatus == 'Pending' && leave.managerStatus == 'Pending') {
-          switch (leave.leaveType) {
+          switch (effectiveLeaveType) {
             case 'Annual Leave':
               annualLeaveRequests--;
               break;
@@ -7559,7 +7662,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
         }
 
         if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Rejected' && leave.managerStatus == 'Pending') {
-          switch (leave.leaveType) {
+          switch (effectiveLeaveType) {
             case 'Annual Leave':
               annualLeaveRequests--;
               break;
@@ -7583,7 +7686,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
         }
 
         if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Pending' && leave.managerStatus == 'Rejected') {
-          switch (leave.leaveType) {
+          switch (effectiveLeaveType) {
             case 'Annual Leave':
               annualLeaveRequests--;
               break;
@@ -7608,7 +7711,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
         // Handling approved leave requests by supervisor and manager
         if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Approved' && leave.managerStatus == 'Approved') {
-          switch (leave.leaveType) {
+          switch (effectiveLeaveType) {
             case 'Annual Leave':
               annualLeaveTaken += leave.days?.toInt() ?? 0;
               annualLeaveRemaining -= leave.days?.toInt() ?? 0;
@@ -7636,8 +7739,9 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               break;
           }
         }
-        if (leave.empStatus == 'Cancelled'  && leave.managerStatus == 'Approved') {
-          switch (leave.leaveType) {
+
+        if (leave.empStatus == 'Cancelled' && leave.managerStatus == 'Approved') {
+          switch (effectiveLeaveType) {
             case 'Annual Leave':
               annualLeaveTaken -= leave.days?.toInt() ?? 0;
               annualLeaveRemaining += leave.days?.toInt() ?? 0;
@@ -7666,7 +7770,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           }
         }
 
-        if ((annualLeaveRemaining <= 0 || sickLeaveRemaining <= 0 || compassionateLeaveRemaining <= 0) &&
+        // Add unpaid authorize when all leave types are exhausted
+        if ((annualLeaveRemaining <= 0 && sickLeaveRemaining <= 0 && compassionateLeaveRemaining <= 0) &&
             (leave.leaveType == 'Annual Leave' || leave.leaveType == 'Sick Leave' || leave.leaveType == 'Compassionate Leave') &&
             leave.empStatus == 'Pending' &&
             leave.supervisorStatus == 'Approved' &&
@@ -7674,9 +7779,13 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
           // Add the leave days to unpaid authorize
           unpaidAuthorize += leave.days?.toInt() ?? 0;
+
+          // Once unpaid authorize leave is approved, ensure no negative remaining days for other leave types
+          annualLeaveRemaining = annualLeaveRemaining < 0 ? 0 : annualLeaveRemaining;
+          sickLeaveRemaining = sickLeaveRemaining < 0 ? 0 : sickLeaveRemaining;
+          compassionateLeaveRemaining = compassionateLeaveRemaining < 0 ? 0 : compassionateLeaveRemaining;
         }
       }
-      // Additional conditions to manage other statuses (e.g., 'Cancelled', 'Rejected') can be added here
     }
 
     // Ensure requests are non-negative
@@ -7700,21 +7809,22 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       'paternityLeaveTaken': paternityLeaveTaken,
       'marriageLeaveTaken': marriageLeaveTaken,
       'compassionateLeaveTaken': compassionateLeaveTaken,
-      'annualLeaveRequests': annualLeaveRequests,
-      'sickLeaveRequests': sickLeaveRequests,
-      'maternityLeaveRequests': maternityLeaveRequests,
-      'paternityLeaveRequests': paternityLeaveRequests,
-      'marriageLeaveRequests': marriageLeaveRequests,
-      'compassionateLeaveRequests': compassionateLeaveRequests,
+      'unpaidAuthorize': unpaidAuthorize,
       'annualLeaveRemaining': annualLeaveRemaining,
       'sickLeaveRemaining': sickLeaveRemaining,
       'maternityLeaveRemaining': maternityLeaveRemaining,
       'paternityLeaveRemaining': paternityLeaveRemaining,
       'marriageLeaveRemaining': marriageLeaveRemaining,
       'compassionateLeaveRemaining': compassionateLeaveRemaining,
-      'unpaidAuthorize': unpaidAuthorize
+      'annualLeaveRequests': annualLeaveRequests,
+      'sickLeaveRequests': sickLeaveRequests,
+      'maternityLeaveRequests': maternityLeaveRequests,
+      'paternityLeaveRequests': paternityLeaveRequests,
+      'marriageLeaveRequests': marriageLeaveRequests,
+      'compassionateLeaveRequests': compassionateLeaveRequests,
     };
   }
+
 
   Map<String, int> leaveValues = {};
 
@@ -7875,7 +7985,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       ),
     )
         : SizedBox(); // Show empty widget if no data is available
-    }
+  }
 
   Widget _phoneReviewTicketTable(Size size) {
     return filteredTicketRequests.isNotEmpty
@@ -8000,7 +8110,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
         : Padding(
       padding: EdgeInsets.all(16.0),
     );
-    }
+  }
 
 
 
@@ -8455,7 +8565,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         headerTextStyle: headerTextStyle,
                         rowTextStyle: rowTextStyle,
                         onCellTap: (context, index, leave){
-                          _showLeaveDialog(context, index, leave);
+                          _pendingDialog(context, index, leave);
                         }) : ReviewTicketTable(
                         size: size,
                         filteredTicketRequests: filteredTicketRequests.whereType<TicketRequest>().toList(),
@@ -8565,7 +8675,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                             height:size.height * 0.170, // Limit height of the list
                             width: size.width * 0.270, // Optional: Adjust width
                             child: messageList.isEmpty
-                            ? Center(
+                                ? Center(
                               child: Text('No messages',style: TextStyle(fontSize: 13,color: Colors.grey),),
                             )
                                 :ListView.separated(
@@ -9076,7 +9186,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                             height:size.height * 0.160, // Limit height of the list
                             width: size.width * 0.280, // Optional: Adjust width
                             child: messageList.isEmpty
-                            ? Center(
+                                ? Center(
                               child: Text('No messages',style: TextStyle(fontSize: 11,color: grey),),
                             )
                                 :ListView.separated(
@@ -10134,28 +10244,28 @@ Widget phonePopContainer(BuildContext context, TextEditingController controller,
     {bool readonly = false}) {
   final Size size = MediaQuery.of(context).size;
   return Container(
-      width: size.width * 0.59,
-      height: size.height * 0.037, // Increase the height for better alignment
-      child: Material(
-          color: Colors.transparent,
-          child: TextField(
-            controller: controller,
-            readOnly: readonly,
-            style: TextStyle(fontSize: 14), // Adjust font size if necessary
-            decoration: InputDecoration(
-              hintText: text,
-              hintStyle: TextStyle(fontSize: no),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 1),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              contentPadding: EdgeInsets.symmetric(
-                  vertical: size.height * 0.014,
-                  horizontal: size.width * 0.02), // Adjust vertical padding
-            ),
+    width: size.width * 0.59,
+    height: size.height * 0.037, // Increase the height for better alignment
+    child: Material(
+      color: Colors.transparent,
+      child: TextField(
+        controller: controller,
+        readOnly: readonly,
+        style: TextStyle(fontSize: 14), // Adjust font size if necessary
+        decoration: InputDecoration(
+          hintText: text,
+          hintStyle: TextStyle(fontSize: no),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1),
+            borderRadius: BorderRadius.circular(5),
           ),
+          contentPadding: EdgeInsets.symmetric(
+              vertical: size.height * 0.014,
+              horizontal: size.width * 0.02), // Adjust vertical padding
         ),
-      );
+      ),
+    ),
+  );
 }
 
 TextStyle headerTextStyle = TextStyle(
