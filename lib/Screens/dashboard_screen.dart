@@ -3342,9 +3342,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         minWidth: size.width * 0.062,
                         height: size.height * 0.052,
                         onPressed: ()  {
-                          Navigator.pop(context);
-                          deleteLeave(leave);
-                          // _showPendingCancelDialog(context, leave,);
+                          _showPendingCancelDialog(context, leave,);
                         },
                         child: Text(
                           'Cancel',
@@ -6864,6 +6862,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               (e) => e?.empID == empId,
           orElse: () => null,
         );
+        print(employeeInfo);
 
         if (employeeInfo != null) {
           String profilePhotoUrl = employeeInfo.profilePhoto ?? '';
@@ -8562,7 +8561,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         headerTextStyle: headerTextStyle,
                         rowTextStyle: rowTextStyle,
                         onCellTap: (context, index, leave){
-                          _pendingDialog(context, index, leave);
+                          _showLeaveDialog(context, index, leave);
                         }) : ReviewTicketTable(
                         size: size,
                         filteredTicketRequests: filteredTicketRequests.whereType<TicketRequest>().toList(),
