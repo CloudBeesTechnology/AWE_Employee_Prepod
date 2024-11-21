@@ -167,11 +167,12 @@ class _SignupScreenState extends State<changePasswordScreen> {
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
                                 fontStyle: FontStyle.normal),),
+                            SizedBox(height:size.height * 0.005),
                            userId(context, userIdController, 0.048, 0.210),
                           ],
                         ),
                       ),
-                       SizedBox(height:size.height * 0.012),
+                       SizedBox(height:size.height * 0.015),
                       SizedBox(
                         width:size.width * 0.230,
                         child: Column(
@@ -181,11 +182,12 @@ class _SignupScreenState extends State<changePasswordScreen> {
                                 fontSize: 15, fontFamily: 'Inter', fontWeight: FontWeight.w600,
                                 color: Colors.black, fontStyle: FontStyle.normal),
                             ),
+                            SizedBox(height:size.height * 0.005),
                            userId(context, pasword, 0.048, 0.210),
                           ],
                         ),
                       ),
-                       SizedBox(height:size.height * 0.012),
+                       SizedBox(height:size.height * 0.015),
                       SizedBox(
                         width:size.width * 0.230,
                         child: Column(
@@ -197,11 +199,12 @@ class _SignupScreenState extends State<changePasswordScreen> {
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
                                 fontStyle: FontStyle.normal)),
+                            SizedBox(height:size.height * 0.005),
                             userId(context, newPassword, 0.048, 0.210)
                           ],
                         ),
                       ),
-                       SizedBox(height:size.height * 0.013),
+                       SizedBox(height:size.height * 0.015),
                       SizedBox(
                         width:size.width * 0.230,
                         child: Column(
@@ -213,6 +216,7 @@ class _SignupScreenState extends State<changePasswordScreen> {
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
                                 fontStyle: FontStyle.normal),),
+                            SizedBox(height:size.height * 0.005),
                            userId(context, confirmPassword, 0.048, 0.210)
                           ],
                         ),
@@ -358,6 +362,7 @@ class _SignupScreenState extends State<changePasswordScreen> {
                                   fontSize: 15, fontFamily: 'Inter', fontWeight: FontWeight.w600,
                                   color: Colors.black, fontStyle: FontStyle.normal),
                               ),
+                              SizedBox(height:size.height * 0.005),
                             userId(context, pasword, 0.050, 0.315)
                             ],
                           ),
@@ -374,6 +379,7 @@ class _SignupScreenState extends State<changePasswordScreen> {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black,
                                   fontStyle: FontStyle.normal)),
+                              SizedBox(height:size.height * 0.005),
                              userId(context, newPassword, 0.050, 0.315)
                             ],
                           ),
@@ -390,6 +396,7 @@ class _SignupScreenState extends State<changePasswordScreen> {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black,
                                   fontStyle: FontStyle.normal),),
+                              SizedBox(height:size.height * 0.005),
                               userId(context, newPassword, 0.050, 0.315)
                             ],
                           ),
@@ -513,6 +520,7 @@ class _SignupScreenState extends State<changePasswordScreen> {
                               color: Colors.black,
                               fontStyle: FontStyle.normal),
                         ),
+                        SizedBox(height:size.height * 0.005),
                         userId(context, userIdController, 0.042, 0.78)
                       ],
                     ),
@@ -532,6 +540,7 @@ class _SignupScreenState extends State<changePasswordScreen> {
                               color: Colors.black,
                               fontStyle: FontStyle.normal),
                         ),
+                        SizedBox(height:size.height * 0.005),
                         userId(context, pasword, 0.042, 0.78)
                       ],
                     ),
@@ -549,6 +558,7 @@ class _SignupScreenState extends State<changePasswordScreen> {
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
                                 fontStyle: FontStyle.normal)),
+                        SizedBox(height:size.height * 0.005),
                         userId(context, newPassword, 0.042, 0.78)
                       ],
                     ),
@@ -568,6 +578,7 @@ class _SignupScreenState extends State<changePasswordScreen> {
                               color: Colors.black,
                               fontStyle: FontStyle.normal),
                         ),
+                        SizedBox(height:size.height * 0.005),
                         userId(context, confirmPassword, 0.042, 0.78)
                       ],
                     ),
@@ -757,9 +768,12 @@ Widget userId(BuildContext context, TextEditingController controller, double hei
       controller: controller,
       decoration: InputDecoration(
         border: InputBorder.none, // Remove default border
-        contentPadding: EdgeInsets.symmetric(horizontal: 8), // Adjust padding
+        isDense: true, // Reduce the overall height of the TextField
+        contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8), // Adjust padding
         hintStyle: TextStyle(color: Colors.grey.shade500),
       ),
+      style: TextStyle(height: 1.4), // Adjust text height
     ),
   );
 }
+

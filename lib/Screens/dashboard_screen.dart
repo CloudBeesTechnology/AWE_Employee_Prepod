@@ -162,7 +162,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
   //contact no update
   Future<void> _updateEmployeeInfo( BuildContext context, String empId, String name,   String contactNo,  String email,
-      {String? dob, String? empBadgeNo, String? empType}) async {
+      ) async {
     try {
       // Fetch the current employee data from the API
       final request = ModelQueries.list(EmpPersonalInfo.classType);
@@ -185,9 +185,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           name: name,
           email: email,
           contactNo: contactNo.isNotEmpty ? [contactNo] : employeeInfo.contactNo,
-          empBadgeNo: empBadgeNo ?? employeeInfo.empBadgeNo,
-          empType: empType!.isNotEmpty ? [empType] : employeeInfo.empType,
-          dob: dob ?? employeeInfo.dob, // Only update if dob is provided
+
         );
 
 
@@ -386,7 +384,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       onTap: (){
                         Navigator.pop(context);
                         _showEditDialog(context);
-
                       },
                       child: RichText(
                         text: TextSpan(
@@ -1236,8 +1233,19 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               MaterialButton(
                 minWidth: size.width * .06,
                 height: size.height * 0.03,
-                onPressed: () {
-                  Get.back(); // Close the dialog
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await _updateEmployeeInfo(
+                    context,
+                    empId, // Pass empId
+                    fullName.text,
+                    mobile.text,
+                    email.text,
+                  );
+                  await fetchUpdatedEmployeeInfo(context);
+                  _showAlertDialog('Success', 'Personal info Edited successfully.');
+                  Get.back();
+                  // Close the dialog
                 },
                 child: Text('Save',style: TextStyle(fontSize: 16,fontFamily: 'Inter',),),
                 color: Colors.yellow,
@@ -1406,8 +1414,19 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   MaterialButton(
                     minWidth: size.width * .09,
                     height: size.height * 0.03,
-                    onPressed: () {
-                      Get.back(); // Close the dialog
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      await _updateEmployeeInfo(
+                        context,
+                        empId, // Pass empId
+                        fullName.text,
+                        mobile.text,
+                        email.text,
+                      );
+                      await fetchUpdatedEmployeeInfo(context);
+                      _showAlertDialog('Success', 'Personal info Edited successfully.');
+                      Get.back();
+                      // Close the dialog
                     },
                     child: Text(
                       'Save',
@@ -1728,8 +1747,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
                         ),
                         SizedBox(height: size.height * 0.035),
-
-                        // Apply and Cancel Buttons
                         Row(
                           children: [
                             SizedBox(width: size.width * 0.125),
@@ -2090,39 +2107,14 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                             MaterialButton(
                               minWidth: size.width * 0.068,
                               height: size.height * 0.048,
-                              onPressed: () {
+                              onPressed: () async {
                                 validateFields();
                                 if (departureError == null &&
                                     arrivalError == null &&
                                     destinationError == null &&
                                     remarksError == null) {
-                                  // Show confirmation dialog before applying
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Confirm ?'),
-                                        content: Text('Are you sure you want to apply for the ticket?'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context); // Dismiss the dialog immediately
-                                            },
-                                            child: Text('No', style: TextStyle(color: Colors.red)),
-                                          ),
-                                          TextButton(
-                                            onPressed: () async {
-                                              Navigator.pop(context); // Close confirmation dialog
-                                              // Call applyTicketRequest function and pass inputs
-                                              await applyTicketRequest(departure.text, arrival.text, destination.text, remarks.text);
-
-                                            },
-                                            child: Text('Yes', style: TextStyle(color: Colors.green)),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
+                                  // Call applyTicketRequest function directly
+                                  await applyTicketRequest(departure.text, arrival.text, destination.text, remarks.text);
                                 }
                               },
 
@@ -2896,7 +2888,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
   Future<void> fetchLeaveData() async {
     try {
-      setState(() => isLoading = true);
 
       final box = GetStorage();
       String empId = box.read('userId') ?? '';
@@ -4172,11 +4163,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void _phoneapprovedDialog(
-      BuildContext context,
-      int rowIndex,
-      LeaveStatus leave,
-      ) {
+  void _phoneapprovedDialog( BuildContext context,  int rowIndex, LeaveStatus leave, )  {
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
       Dialog(
@@ -4799,8 +4786,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void _phonerejectedDialog(
-      BuildContext context, int rowIndex, LeaveStatus leave) {
+  void _phonerejectedDialog(BuildContext context,int rowIndex,LeaveStatus leave){
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
       Dialog(
@@ -5109,7 +5095,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           return Dialog(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              width: size.width * 0.260,
+              width: size.width * 0.265,
               decoration: BoxDecoration(
                 color: dialog,
                 borderRadius: BorderRadius.circular(8),
@@ -5175,7 +5161,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.050,),
                       Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                       SizedBox(width:size.width *  0.047,),
-                      Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            Positions.isNotEmpty? Positions :  'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -5318,7 +5313,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.065,),
                       Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                       SizedBox(width:size.width *  0.068,),
-                      Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 13,color: black),),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            Positions.isNotEmpty? Positions: 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -5387,11 +5391,9 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     // Refresh the DataTable to reflect the updated status in UI (if necessary)
   }
 
-  void _phoneticketpendingDialog(
-      BuildContext context, int rowIndex, TicketRequest request) {
+  void _phoneticketpendingDialog(  BuildContext context,int rowIndex, TicketRequest request) {
     final Size size = MediaQuery.of(context).size;
     String status = 'Pending'; // Initialize the status locally
-
     Get.dialog(
       StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
@@ -5399,7 +5401,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              width: size.width * 0.74,
+              width: size.width * 0.78,
               decoration: BoxDecoration(
                 color: dialog,
                 borderRadius: BorderRadius.circular(8),
@@ -5520,10 +5522,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(
                         width: size.width * 0.126,
                       ),
-                      Text(
-                        Positions,
-                        style: TextStyle(
-                            fontFamily: 'Inter', fontSize: 12, color: black),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            Positions.isNotEmpty ? Positions: 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -5642,7 +5649,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: Container(
-          width: size.width * 0.260,
+          width: size.width * 0.265,
           decoration: BoxDecoration(
             color: dialog,
             borderRadius: BorderRadius.circular(5),
@@ -5708,7 +5715,17 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.050,),
                   Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                   SizedBox(width:size.width *  0.047,),
-                  Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ? Positions :  'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
+
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -5849,7 +5866,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.065,),
                       Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                       SizedBox(width:size.width *  0.068,),
-                      Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 13,color: black),),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            Positions.isNotEmpty ? Positions: 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -5918,15 +5944,14 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     // Refresh the DataTable to reflect the updated status in UI (if necessary)
   }
 
-  void _phoneticketapprovedDialog(
-      BuildContext context, int rowIndex, TicketRequest request) {
+  void _phoneticketapprovedDialog( BuildContext context, int rowIndex, TicketRequest request) {
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
       Dialog(
         shape:
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: Container(
-          width: size.width * 0.75,
+          width: size.width * 0.78,
           decoration: BoxDecoration(
             color: dialog,
             borderRadius: BorderRadius.circular(5),
@@ -6047,10 +6072,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(
                     width: size.width * 0.126,
                   ),
-                  Text(
-                    Positions,
-                    style: TextStyle(
-                        fontFamily: 'Inter', fontSize: 12, color: black),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty? Positions :  'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -6167,7 +6197,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: Container(
-          width: size.width * 0.260,
+          width: size.width * 0.265,
           decoration: BoxDecoration(
             color: dialog,
             borderRadius: BorderRadius.circular(8),
@@ -6233,7 +6263,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.050,),
                   Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                   SizedBox(width:size.width *  0.047,),
-                  Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ? Positions: 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -6369,7 +6408,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.065,),
                   Text('Position',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                   SizedBox(width:size.width *  0.068,),
-                  Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 13,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions,
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -6433,15 +6481,14 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  void _phoneticketrejectedDialog(
-      BuildContext context, int rowIndex, TicketRequest request) {
+  void _phoneticketrejectedDialog(  BuildContext context, int rowIndex, TicketRequest request){
     final Size size = MediaQuery.of(context).size;
     Get.dialog(
       Dialog(
         shape:
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: Container(
-          width: size.width * 0.76,
+          width: size.width * 0.78,
           decoration: BoxDecoration(
             color: dialog,
             borderRadius: BorderRadius.circular(8),
@@ -6562,10 +6609,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(
                     width: size.width * 0.13,
                   ),
-                  Text(
-                    Positions,
-                    style: TextStyle(
-                        fontFamily: 'Inter', fontSize: 12, color: black),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ? Positions : 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -6730,13 +6782,13 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
             compasLeave = box.read('compasLeave') ?? '0';
           });
         } else {
-          print('No matching work data found for user: $empId');
+          print('No matching leave details found for user: $empId');
         }
       } else {
-        print('No work data found.');
+        print('No leave data found.');
       }
     } catch (e) {
-      print('Failed to fetch empworkinfo: $e');
+      print('Failed to fetch EmpLeaveDetails: $e');
     }
   }
 
@@ -6834,6 +6886,14 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     box.write('supervisorEmpID', supervisorInfo?.empID ?? '');
     box.write('managerEmpID', managerInfo?.empID ?? '');
 
+    setState(() {
+      managerEmail=box.read('managerEmail') ?? 'N/A';
+      supervisorEmail=box.read('supervisorEmail') ?? 'N/A';
+      hrEmail=box.read('hrEmail') ?? 'N/A';
+      managerEmpId=box.read('managerEmpID') ?? 'N/A';
+      supervisorEmpId=box.read('supervisorEmpID') ?? 'N/A';
+    });
+
     // Debug print
     print('${managerInfo?.name ?? 'N/A'}: ${managerInfo?.email ?? 'N/A'} : ${managerInfo?.empID ?? 'N/A'} ');
     print('${supervisorInfo?.name ?? 'N/A'}: ${supervisorInfo?.email ?? 'N/A'} :${supervisorInfo?. empID?? 'N/A'} ');
@@ -6895,8 +6955,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       print('Failed to fetch employee personal info: $e');
     }
   }
-
-
 
   Future<void> fetchEmailNotifications(BuildContext context) async {
     try {
@@ -6969,8 +7027,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       print('Failed to fetch email notifications: $e');
     }
   }
-
-
 
   void _showAlertDialog(String title, String content) {
     Get.dialog(
@@ -7428,7 +7484,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
                 if (success) {
                   _showAlertDialog('Success', 'Approved Ticket request cancelled Succesfully.');
-                  bool emailSent= await sendTicketEmail(hrEmail, employeeName);
+                  bool emailSent= await ticketApprovedCancelEmail(hrEmail, employeeName);
                   if(emailSent){
                     print('Email successfully sent to hr: $hrEmail');
                     await updateEmailNotificationStatus(request.empID, 'Cancelled', ' Approved Ticket request cancelled by ${employeeName}', hrEmail);
@@ -7980,7 +8036,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
         ),
       ),
     )
-        : SizedBox(); // Show empty widget if no data is available
+        : SizedBox(); //
   }
 
   Widget _phoneReviewTicketTable(Size size) {
@@ -9403,13 +9459,11 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         Row(
                           children: [
                             SizedBox(width: size.width * 0.250),
-                            Text(
-                              'Total AL/SL/UA',
-                              style: TextStyle(
-                                  color: black,
-                                  fontFamily: 'Inter',
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.bold),
+                            Text( 'Total AL/SL/UA',style: TextStyle(
+                                color: black,
+                                fontFamily: 'Inter',
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold),
                             ),
                             SizedBox(width: size.width * 0.025),
                             Text(

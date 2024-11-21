@@ -36,8 +36,8 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   String badgeno='' ;
   String image='' ;
   String  department='';
-  // String  supervisor='';
-  // String  manager='';
+   String  supervisorName='';
+   String  managerName='';
   String  managerEmail='';
   String supervisorEmail ='';
 
@@ -79,8 +79,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   String? certificateError;
 
 
-
-
   @override
   void initState() {
     super.initState();
@@ -93,6 +91,9 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
     department = box.read('department') ?? 'N/A';
     managerEmail = box.read('managerEmail') ?? 'N/A';
     supervisorEmail = box.read('supervisorEmail') ?? 'N/A';
+
+      supervisorName =box.read('supervisorName') ?? 'N/A';
+     managerName=box.read('managerName') ?? 'N/A';
 
     final String annualLeaveStr = box.read('annualLeave') ?? '0';
     final String sickLeaveStr = box.read('sickLeave') ?? '0';
@@ -298,9 +299,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
       if ((_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') && fileName == null) {
         certificateError = '* Medical certificate required for $_selectedLeaveType';
         isValid = false;
-      } else if (_selectedLeaveType == 'Compensate Leave' && fileName == null) {
-        certificateError = '* Document required for $_selectedLeaveType';
-        isValid = false;
       }
     });
 
@@ -329,8 +327,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
 
   String? fileName; // Variable to store the name of the selected file
   String? medicalCertificateUrl;
-
-
 
   Future<void> applyForLeave() async {
     final box = GetStorage();
@@ -836,9 +832,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                               // Check the selected leave type and set the corresponding error message
                                               if (_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') {
                                                 certificateError = 'Medical certificate required';
-                                              } else if (_selectedLeaveType == 'Compensate Leave') {
-                                                certificateError = 'Document required';
-                                              } else {
+                                              }  else {
                                                 // Clear the certificate error for other leave types
                                                 certificateError = null;
                                               }
@@ -1376,11 +1370,11 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                             SizedBox(width: size.width * 0.10,),
                             Text('Badge #:',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black,fontWeight: FontWeight.bold),),
                             SizedBox(width: size.width * 0.048,),
-                            tabContainer(context, '0001'),
+                            tabContainer(context, badgeno),
                             SizedBox(width: size.width * 0.067,),
                             Text('Name:',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black,fontWeight: FontWeight.bold),),
                             SizedBox(width: size.width * 0.065,),
-                            tabContainer(context, 'Adinin'),
+                            tabContainer(context, employeeName),
                           ],
                         ),
                         SizedBox(height: size.height * 0.025,),
@@ -1389,11 +1383,11 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                             SizedBox(width: size.width * 0.10,),
                             Text('Dept/Dev:',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black,fontWeight: FontWeight.bold),),
                             SizedBox(width: size.width * 0.041,),
-                            tabContainer(context, 'Xyz'),
+                            tabContainer(context, department),
                             SizedBox(width: size.width * 0.064,),
                             Text('Job Title:',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black,fontWeight: FontWeight.bold),),
                             SizedBox(width: size.width * 0.052,),
-                            tabContainer(context, 'Worker'),
+                            tabContainer(context, position),
                           ],
                         ),
                         SizedBox(height: size.height * 0.03,),
@@ -1450,8 +1444,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                             // Check the selected leave type and set the corresponding error message
                                             if (_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') {
                                               certificateError = 'Medical certificate required';
-                                            } else if (_selectedLeaveType == 'Compensate Leave') {
-                                              certificateError = 'Document required';
                                             } else {
                                               // Clear the certificate error for other leave types
                                               certificateError = null;
@@ -1897,42 +1889,10 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               borderRadius: BorderRadius.circular(45),
                               color: Colors.transparent,
                               child: MaterialButton(
-                                onPressed: () {
-                                  // Validate all fields before applying
+                                onPressed: () async {
                                   if (_validateFields()) {
-                                    // All fields are filled, show confirmation popup with Yes and No buttons
-                                    Get.defaultDialog(
-                                      title: 'Confirm',
-                                      content: Text('Are you sure you want to apply?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            // Action on No (cancel)
-                                            Get.back(); // Clo  se the dialog
-                                          } ,
-                                          child: Text('No', style: TextStyle(color: Colors.red)),
-                                        ),
-                                        TextButton(
-                                          onPressed: () async {
-                                            Get.back(); // Close the dialog first
-
-                                            // Proceed with creating the leave request
-                                            await applyForLeave(); // This will show success/error dialogs based on the result
-                                          },
-                                          child: Text('Yes', style: TextStyle(color: Colors.green)),
-                                        )
-                                      ],
-                                    );
-                                  } else {
-                                    // Show error alert dialog if fields are missing
-                                    Get.defaultDialog(
-                                      title: 'Error',
-                                      content: Text('Please fill all required fields.'),
-                                      confirmTextColor: Colors.white,
-                                      onConfirm: () {
-                                        Get.back(); // Close the dialog
-                                      },
-                                    );
+                                    // Trigger the leave application process by calling applyForLeave
+                                    await applyForLeave();
                                   }
                                 },
                                 minWidth: size.width * 0.10,
@@ -2279,9 +2239,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                                           // Check the selected leave type and set the corresponding error message
                                           if (_selectedLeaveType == 'Sick Leave' || _selectedLeaveType == 'Hospitalisation Leave') {
                                             certificateError = 'Medical certificate required';
-                                          } else if (_selectedLeaveType == 'Compensate Leave') {
-                                            certificateError = 'Document required';
-                                          } else {
+                                          }  else {
                                             // Clear the certificate error for other leave types
                                             certificateError = null;
                                           }
@@ -2841,47 +2799,10 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               Material(
                                 borderRadius: BorderRadius.circular(45),
                                 child: MaterialButton(
-                                  onPressed: () {
-                                    // Validate all fields before applying
+                                  onPressed: () async {
                                     if (_validateFields()) {
-                                      // All fields are filled, show confirmation popup with Yes and No buttons
-                                      Get.defaultDialog(
-                                        title: 'Confirm',
-                                        content: Text(
-                                            'Are you sure you want to apply?'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              // Action on No (cancel)
-                                              Get.back(); // Clo  se the dialog
-                                            },
-                                            child: Text('No',
-                                                style: TextStyle(
-                                                    color: Colors.red)),
-                                          ),
-                                          TextButton(
-                                            onPressed: () async {
-                                              Get.back(); // Close the dialog first
-                                              // Proceed with creating the leave request
-                                              await applyForLeave(); // This will show success/error dialogs based on the result
-                                            },
-                                            child: Text('Yes',
-                                                style: TextStyle(
-                                                    color: Colors.green)),
-                                          ),
-                                        ],
-                                      );
-                                    } else {
-                                      // Show error alert dialog if fields are missing
-                                      Get.defaultDialog(
-                                        title: 'Error',
-                                        content: Text(
-                                            'Please fill all required fields.'),
-                                        confirmTextColor: Colors.white,
-                                        onConfirm: () {
-                                          Get.back(); // Close the dialog
-                                        },
-                                      );
+                                      // Trigger the leave application process by calling applyForLeave
+                                      await applyForLeave();
                                     }
                                   },
                                   minWidth: size.width * 0.17,
