@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:awe_project/Components/helper_class.dart';
@@ -179,77 +181,116 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
     }
   }
 
-
-  List<DateTime> getHolidays(int year) {
+  Future<List<DateTime>> getHolidays(int year, String s3Url) async {
     List<DateTime> holidays = [
-      DateTime(2024, 1, 1), // New Year's Day
-      DateTime(2024, 2, 10), // Brunei National Day
-      DateTime(2024, 2, 23),
-      DateTime(2024, 3, 12), // First day of Ramadhan
-      DateTime(2024, 3, 28), // Anniversary of the Revelation of the Quran
-      DateTime(2024, 4, 10), // Hari Raya Aidil Fitri
-      DateTime(2024, 4, 11),
-      DateTime(2024, 6, 17), // Hari Raya Aidil Adha
-      DateTime(2024, 7, 8), // First Day of Hijriah
-      DateTime(2024, 7, 15), // His Majesty the Sultan’s Birthday
-      DateTime(2024, 9, 16), // Maulud - Prophet Muhammad’s Birthday
-      DateTime(2024, 12, 25), // Christmas Day
+      DateTime(2024, 1, 1), // Default holidays
+      DateTime(2024, 12, 25), // Brunei National Day
     ];
 
-    // Add the next day as a holiday if any holiday falls on a Sunday
-    List<DateTime> adjustedHolidays = [];
-    for (DateTime holiday in holidays) {
-      adjustedHolidays.add(holiday);
-      if (holiday.weekday == DateTime.sunday) {
-        // Add the next day (Monday) if the holiday is on a Sunday
-        adjustedHolidays.add(holiday.add(Duration(days: 1)));
+    try {
+      final response = await http.get(Uri.parse(s3Url));
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonData = json.decode(response.body);
+
+        if (jsonData.containsKey('CompanyHolidays2025') && jsonData['CompanyHolidays2025'] is List) {
+          List<dynamic> fetchedHolidays = jsonData['CompanyHolidays2025'];
+          for (var holiday in fetchedHolidays) {
+            if (holiday.containsKey('date')) {
+              // Handle single-day holidays
+              holidays.add(parseCustomDate(holiday['date']));
+            } else if (holiday.containsKey('dates')) {
+              // Handle multi-day holidays (like Hari Raya)
+              List<dynamic> holidayDates = holiday['dates'];
+              holidayDates.forEach((date) {
+                holidays.add(parseCustomDate(date));
+              });
+            }
+          }
+        }
+      } else {
+        print('Failed to fetch holidays. Status: ${response.statusCode}');
       }
+    } catch (e) {
+      print('Error fetching holidays: $e');
     }
 
-    return adjustedHolidays;
+    // Adjust for Sundays (if holiday falls on Sunday, add Monday as holiday)
+    List<DateTime> adjustedHolidays = holidays.toSet().toList();
+    for (DateTime holiday in holidays) {
+      if (holiday.weekday == DateTime.sunday) {
+        adjustedHolidays.add(holiday.add(Duration(days: 1))); // Add Monday as a holiday
+      }
+    }
+    return adjustedHolidays.toSet().toList(); // Ensure uniqueness
   }
 
+  DateTime parseCustomDate(String rawDate) {
+    try {
+      // Remove the weekday name and any ordinal suffix (st, nd, rd, th)
+      String cleanedDate = rawDate.replaceFirst(RegExp(r'^[A-Za-z]+,?\s*'), ''); // Remove weekday name
+      cleanedDate = cleanedDate.replaceAllMapped(RegExp(r'(\d+)(st|nd|rd|th)'), (match) => match.group(1)!); // Remove ordinal suffixes
 
-// Calculate the number of days excluding holidays and Sundays
-  void _calculateDays() {
+      // Parse the date in the format "d MMMM yyyy"
+      return DateFormat('d MMMM yyyy').parse(cleanedDate);
+    } catch (e) {
+      print('Error parsing date: $rawDate, $e');
+      return DateTime.now();
+    }
+  }
+
+  Future<void> _calculateDays() async {
     if (_fromDate != null && _toDate != null) {
-      List<DateTime> holidays = getHolidays(_fromDate!.year);
+      // Fetch holidays for the year
+      List<DateTime> holidays = await getHolidays(
+        _fromDate!.year,
+        'https://commonfiles.s3.ap-southeast-1.amazonaws.com/Leave+Details/CompanyHolidays2025.json',
+      );
+
+      // Handle holidays spanning across different years
       if (_fromDate!.year != _toDate!.year) {
-        holidays.addAll(getHolidays(_toDate!.year));
+        holidays.addAll(await getHolidays(
+          _toDate!.year,
+          'https://commonfiles.s3.ap-southeast-1.amazonaws.com/Leave+Details/CompanyHolidays2025.json',
+        ));
       }
+
+      // Sort holidays and remove duplicates
+      holidays.sort();
+      Set<DateTime> holidaySet = holidays.map((e) => DateTime(e.year, e.month, e.day)).toSet();
 
       DateTime currentDate = _fromDate!;
       double totalDays = 0;
 
       while (!currentDate.isAfter(_toDate!)) {
-        bool isHoliday = holidays.contains(DateTime(currentDate.year, currentDate.month, currentDate.day));
+        bool isHoliday = holidaySet.contains(currentDate);
         bool isSunday = currentDate.weekday == DateTime.sunday;
 
-        // Count only non-holiday, non-Sunday days
-        if (!isHoliday && !isSunday) {
-          totalDays++;
+        if (isHoliday || isSunday) {
+          // Skip holidays and Sundays
+          currentDate = currentDate.add(Duration(days: 1));
+          continue;
         }
 
+        // Count valid working days
+        totalDays++;
         currentDate = currentDate.add(Duration(days: 1));
       }
 
-      // Ensure proper day count when "from" and "to" are the same date
+      // If "from" and "to" dates are the same, count as 1 day
       if (_fromDate!.isAtSameMomentAs(_toDate!)) {
         totalDays = 1;
       }
 
-      // Half-day logic
+      // Handle half-day scenario
       if (isHalfDay) {
-        if (_fromDate == _toDate) {
-          totalDays = 0.5;
-        } else {
-          totalDays -= 0.5;
-        }
+        totalDays = (_fromDate == _toDate) ? 0.5 : totalDays - 0.5;
       }
 
+      // Update the UI with the calculated total days
       days.text = totalDays.toString();
     }
   }
+
 
 
   bool _validateFields() {

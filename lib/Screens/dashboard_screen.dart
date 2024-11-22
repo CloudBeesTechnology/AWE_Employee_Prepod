@@ -7712,7 +7712,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               break;
           }
         }
-
         if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Rejected' && leave.managerStatus == 'Pending') {
           switch (effectiveLeaveType) {
             case 'Annual Leave':
@@ -7737,87 +7736,111 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           }
         }
 
-        if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Pending' && leave.managerStatus == 'Rejected') {
-          switch (effectiveLeaveType) {
-            case 'Annual Leave':
-              annualLeaveRequests--;
-              break;
-            case 'Sick Leave':
-            case 'Hospitalisation Leave':
-              sickLeaveRequests--;
-              break;
-            case 'Maternity Leave':
-              maternityLeaveRequests--;
-              break;
-            case 'Paternity Leave':
-              paternityLeaveRequests--;
-              break;
-            case 'Marriage Leave':
-              marriageLeaveRequests--;
-              break;
-            case 'Compassionate Leave':
-              compassionateLeaveRequests--;
-              break;
-          }
-        }
+
 
         // Handling approved leave requests by supervisor and manager
         if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Approved' && leave.managerStatus == 'Approved') {
+          int approvedDays = leave.days?.toInt() ?? 0;
+
           switch (effectiveLeaveType) {
-            case 'Annual Leave':
-              annualLeaveTaken += leave.days?.toInt() ?? 0;
-              annualLeaveRemaining -= leave.days?.toInt() ?? 0;
+            case 'Marriage Leave':
+              if (approvedDays > marriageLeaveRemaining) {
+                int excessDays = approvedDays - marriageLeaveRemaining;
+                marriageLeaveTaken += marriageLeaveRemaining;
+                marriageLeaveRemaining = 0;
+
+                if (annualLeaveRemaining >= excessDays) {
+                  annualLeaveTaken += excessDays;
+                  annualLeaveRemaining -= excessDays;
+                } else {
+                  int leftover = excessDays - annualLeaveRemaining;
+                  annualLeaveTaken += annualLeaveRemaining;
+                  annualLeaveRemaining = 0;
+
+                  sickLeaveTaken += leftover;
+                  sickLeaveRemaining -= leftover;
+                }
+              } else {
+                marriageLeaveTaken += approvedDays;
+                marriageLeaveRemaining -= approvedDays;
+              }
               break;
+
+            case 'Paternity Leave':
+              if (approvedDays > paternityLeaveRemaining) {
+                int excessDays = approvedDays - paternityLeaveRemaining;
+                paternityLeaveTaken += paternityLeaveRemaining;
+                paternityLeaveRemaining = 0;
+
+                if (annualLeaveRemaining >= excessDays) {
+                  annualLeaveTaken += excessDays;
+                  annualLeaveRemaining -= excessDays;
+                } else {
+                  int leftover = excessDays - annualLeaveRemaining;
+                  annualLeaveTaken += annualLeaveRemaining;
+                  annualLeaveRemaining = 0;
+
+                  sickLeaveTaken += leftover;
+                  sickLeaveRemaining -= leftover;
+                }
+              } else {
+                paternityLeaveTaken += approvedDays;
+                paternityLeaveRemaining -= approvedDays;
+              }
+              break;
+
+            case 'Annual Leave':
+              annualLeaveTaken += approvedDays;
+              annualLeaveRemaining -= approvedDays;
+              break;
+
             case 'Sick Leave':
             case 'Hospitalisation Leave':
-              sickLeaveTaken += leave.days?.toInt() ?? 0;
-              sickLeaveRemaining -= leave.days?.toInt() ?? 0;
+              sickLeaveTaken += approvedDays;
+              sickLeaveRemaining -= approvedDays;
               break;
+
             case 'Maternity Leave':
-              maternityLeaveTaken += leave.days?.toInt() ?? 0;
-              maternityLeaveRemaining -= leave.days?.toInt() ?? 0;
+              maternityLeaveTaken += approvedDays;
+              maternityLeaveRemaining -= approvedDays;
               break;
-            case 'Paternity Leave':
-              paternityLeaveTaken += leave.days?.toInt() ?? 0;
-              paternityLeaveRemaining -= leave.days?.toInt() ?? 0;
-              break;
-            case 'Marriage Leave':
-              marriageLeaveTaken += leave.days?.toInt() ?? 0;
-              marriageLeaveRemaining -= leave.days?.toInt() ?? 0;
-              break;
+
             case 'Compassionate Leave':
-              compassionateLeaveTaken += leave.days?.toInt() ?? 0;
-              compassionateLeaveRemaining -= leave.days?.toInt() ?? 0;
+              compassionateLeaveTaken += approvedDays;
+              compassionateLeaveRemaining -= approvedDays;
               break;
           }
         }
 
+        // Handling cancelled leave requests
         if (leave.empStatus == 'Cancelled' && leave.managerStatus == 'Approved') {
+          int canceledDays = leave.days?.toInt() ?? 0;
+
           switch (effectiveLeaveType) {
+            case 'Marriage Leave':
+              marriageLeaveTaken -= canceledDays;
+              marriageLeaveRemaining += canceledDays;
+              break;
+            case 'Paternity Leave':
+              paternityLeaveTaken -= canceledDays;
+              paternityLeaveRemaining += canceledDays;
+              break;
             case 'Annual Leave':
-              annualLeaveTaken -= leave.days?.toInt() ?? 0;
-              annualLeaveRemaining += leave.days?.toInt() ?? 0;
+              annualLeaveTaken -= canceledDays;
+              annualLeaveRemaining += canceledDays;
               break;
             case 'Sick Leave':
             case 'Hospitalisation Leave':
-              sickLeaveTaken -= leave.days?.toInt() ?? 0;
-              sickLeaveRemaining += leave.days?.toInt() ?? 0;
+              sickLeaveTaken -= canceledDays;
+              sickLeaveRemaining += canceledDays;
               break;
             case 'Maternity Leave':
-              maternityLeaveTaken -= leave.days?.toInt() ?? 0;
-              maternityLeaveRemaining += leave.days?.toInt() ?? 0;
-              break;
-            case 'Paternity Leave':
-              paternityLeaveTaken -= leave.days?.toInt() ?? 0;
-              paternityLeaveRemaining += leave.days?.toInt() ?? 0;
-              break;
-            case 'Marriage Leave':
-              marriageLeaveTaken -= leave.days?.toInt() ?? 0;
-              marriageLeaveRemaining += leave.days?.toInt() ?? 0;
+              maternityLeaveTaken -= canceledDays;
+              maternityLeaveRemaining += canceledDays;
               break;
             case 'Compassionate Leave':
-              compassionateLeaveTaken -= leave.days?.toInt() ?? 0;
-              compassionateLeaveRemaining += leave.days?.toInt() ?? 0;
+              compassionateLeaveTaken -= canceledDays;
+              compassionateLeaveRemaining += canceledDays;
               break;
           }
         }
@@ -7832,13 +7855,14 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           // Add the leave days to unpaid authorize
           unpaidAuthorize += leave.days?.toInt() ?? 0;
 
-          // Once unpaid authorize leave is approved, ensure no negative remaining days for other leave types
+          // Ensure no negative remaining days for other leave types
           annualLeaveRemaining = annualLeaveRemaining < 0 ? 0 : annualLeaveRemaining;
           sickLeaveRemaining = sickLeaveRemaining < 0 ? 0 : sickLeaveRemaining;
           compassionateLeaveRemaining = compassionateLeaveRemaining < 0 ? 0 : compassionateLeaveRemaining;
         }
       }
     }
+
 
     // Ensure requests are non-negative
     annualLeaveRequests = annualLeaveRequests < 0 ? 0 : annualLeaveRequests;
