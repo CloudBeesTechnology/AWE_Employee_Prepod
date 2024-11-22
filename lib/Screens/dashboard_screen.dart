@@ -7736,6 +7736,30 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
           }
         }
 
+        if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Pending' && leave.managerStatus == 'Rejected') {
+          switch (effectiveLeaveType) {
+            case 'Annual Leave':
+              annualLeaveRequests--;
+              break;
+            case 'Sick Leave':
+            case 'Hospitalisation Leave':
+              sickLeaveRequests--;
+              break;
+            case 'Maternity Leave':
+              maternityLeaveRequests--;
+              break;
+            case 'Paternity Leave':
+              paternityLeaveRequests--;
+              break;
+            case 'Marriage Leave':
+              marriageLeaveRequests--;
+              break;
+            case 'Compassionate Leave':
+              compassionateLeaveRequests--;
+              break;
+          }
+        }
+
 
 
         // Handling approved leave requests by supervisor and manager
@@ -7846,23 +7870,22 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
         }
 
         // Add unpaid authorize when all leave types are exhausted
-        if ((annualLeaveRemaining <= 0 && sickLeaveRemaining <= 0 && compassionateLeaveRemaining <= 0) &&
-            (leave.leaveType == 'Annual Leave' || leave.leaveType == 'Sick Leave' || leave.leaveType == 'Compassionate Leave') &&
+        if ((annualLeaveRemaining <= 0 && sickLeaveRemaining <= 0 ) &&
+            (leave.leaveType == 'Annual Leave' || leave.leaveType == 'Sick Leave') &&
             leave.empStatus == 'Pending' &&
             leave.supervisorStatus == 'Approved' &&
             leave.managerStatus == 'Approved') {
 
           // Add the leave days to unpaid authorize
           unpaidAuthorize += leave.days?.toInt() ?? 0;
-
-          // Ensure no negative remaining days for other leave types
-          annualLeaveRemaining = annualLeaveRemaining < 0 ? 0 : annualLeaveRemaining;
-          sickLeaveRemaining = sickLeaveRemaining < 0 ? 0 : sickLeaveRemaining;
-          compassionateLeaveRemaining = compassionateLeaveRemaining < 0 ? 0 : compassionateLeaveRemaining;
         }
       }
     }
 
+    // Ensure no negative remaining days for any leave type
+    annualLeaveRemaining = annualLeaveRemaining < 0 ? 0 : annualLeaveRemaining;
+    sickLeaveRemaining = sickLeaveRemaining < 0 ? 0 : sickLeaveRemaining;
+    compassionateLeaveRemaining = compassionateLeaveRemaining < 0 ? 0 : compassionateLeaveRemaining;
 
     // Ensure requests are non-negative
     annualLeaveRequests = annualLeaveRequests < 0 ? 0 : annualLeaveRequests;
@@ -8454,70 +8477,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                             ],
                           ),
                           SizedBox(height: size.height * 0.010,),
-                          if (leaveTypeExists(filteredLeaveData, 'Paternity Leave'))
-                            Row(
-                              children: [
-                                SizedBox(width: size.width * 0.095),
-                                Text('Paternity Leave',style: TextStyle(color: black,fontFamily: 'Inter',fontSize: 14,fontWeight: FontWeight.bold),),
-                                SizedBox(width: size.width * 0.056),
-                                shoreContainer(context, '${leaveValues['totalPaternityLeave'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.058),
-                                shoreContainer(context, '${leaveValues['paternityLeaveTaken'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.047),
-                                shoreContainer(context, '${leaveValues['paternityLeaveRemaining'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.050),
-                                shoreContainer(context,'${leaveValues['paternityLeaveRequests'] ?? 0}' ,15),
-                              ],
-                            ),
-                          SizedBox(height: size.height * 0.010,),
-                          if (leaveTypeExists(filteredLeaveData, 'Maternity Leave'))
-                            Row(
-                              children: [
-                                SizedBox(width: size.width * 0.095),
-                                Text('Maternity Leave',style: TextStyle(color: black,fontFamily: 'Inter',fontSize: 14,fontWeight: FontWeight.bold),),
-                                SizedBox(width: size.width * 0.054),
-                                shoreContainer(context, '${leaveValues['totalMaternityLeave'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.058),
-                                shoreContainer(context, '${leaveValues['maternityLeaveTaken'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.047),
-                                shoreContainer(context, '${leaveValues['maternityLeaveRemaining'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.050),
-                                shoreContainer(context,'${leaveValues['maternityLeaveRequests'] ?? 0}' ,15),
-                              ],
-                            ),
-                          SizedBox(height: size.height * 0.010,),
-                          if (leaveTypeExists(filteredLeaveData, 'Compassionate Leave'))
-                            Row(
-                              children: [
-                                SizedBox(width: size.width * 0.095),
-                                Text('Compassionate Leave',style: TextStyle(color: black,fontFamily: 'Inter',fontSize: 14,fontWeight: FontWeight.bold),),
-                                SizedBox(width: size.width * 0.028),
-                                shoreContainer(context, '${leaveValues['totalCompassionateLeave'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.058),
-                                shoreContainer(context, '${leaveValues['compassionateLeaveTaken'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.047),
-                                shoreContainer(context, '${leaveValues['compassionateLeaveRemaining'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.050),
-                                shoreContainer(context, '${leaveValues['compassionateLeaveRequests'] ?? 0}',15),
-                              ],
-                            ),
-                          SizedBox(height: size.height * 0.010,),
-                          if (leaveTypeExists(filteredLeaveData, 'Marriage Leave'))
-                            Row(
-                              children: [
-                                SizedBox(width: size.width * 0.095),
-                                Text('Marriage Leave',style: TextStyle(color: black,fontFamily: 'Inter',fontSize: 14,fontWeight: FontWeight.bold),),
-                                SizedBox(width: size.width * 0.057),
-                                shoreContainer(context, '${leaveValues['totalMarriageLeave'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.058),
-                                shoreContainer(context, '${leaveValues['marriageLeaveTaken'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.047),
-                                shoreContainer(context, '${leaveValues['marriageLeaveRemaining'] ?? 0}',15),
-                                SizedBox(width: size.width * 0.050),
-                                shoreContainer(context, '${leaveValues['marriageLeaveRequests'] ?? 0}',15),
-                              ],
-                            ),
-                          SizedBox(height: size.height * 0.008,),
+
                         ],
                       ),
                     )
@@ -8959,70 +8919,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                               SizedBox(width: size.width * 0.052),
                             ],
                           ),
-                          SizedBox(height: size.height * 0.010,),
-                          if (leaveTypeExists(filteredLeaveData, 'Paternity Leave'))
-                            Row(
-                              children: [
-                                SizedBox(width: size.width * 0.095),
-                                Text('Paternity Leave',style: TextStyle(color: black,fontFamily: 'Inter',fontSize: 12,fontWeight: FontWeight.bold),),
-                                SizedBox(width: size.width * 0.081),
-                                shoreContainer(context, '${leaveValues['totalPaternityLeave'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.063),
-                                shoreContainer(context, '${leaveValues['paternityLeaveTaken'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.062),
-                                shoreContainer(context, '${leaveValues['paternityLeaveRemaining'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.059),
-                                shoreContainer(context, '${leaveValues['paternityLeaveRequests'] ?? 0}',13),
-                              ],
-                            ),
-                          SizedBox(height: size.height * 0.010,),
-                          if (leaveTypeExists(filteredLeaveData, 'Maternity Leave'))
-                            Row(
-                              children: [
-                                SizedBox(width: size.width * 0.092),
-                                Text('Maternity Leave',style: TextStyle(color: black,fontFamily: 'Inter',fontSize: 12,fontWeight: FontWeight.bold),),
-                                SizedBox(width: size.width * 0.057),
-                                shoreContainer(context, '${leaveValues['totalMaternityLeave'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.063),
-                                shoreContainer(context, '${leaveValues['maternityLeaveTaken'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.062),
-                                shoreContainer(context, '${leaveValues['maternityLeaveRemaining'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.059),
-                                shoreContainer(context, '${leaveValues['maternityLeaveRequests'] ?? 0}',13),
-                              ],
-                            ),
-                          SizedBox(height: size.height * 0.010,),
-                          if (leaveTypeExists(filteredLeaveData, 'Compassionate Leave'))
-                            Row(
-                              children: [
-                                SizedBox(width: size.width * 0.095),
-                                Text('Compassionate Leave',style: TextStyle(color: black,fontFamily: 'Inter',fontSize: 12,fontWeight: FontWeight.bold),),
-                                SizedBox(width: size.width * 0.020),
-                                shoreContainer(context, '${leaveValues['totalCompassionateLeave'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.063),
-                                shoreContainer(context, '${leaveValues['compassionateLeaveTaken'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.062),
-                                shoreContainer(context, '${leaveValues['compassionateLeaveRemaining'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.059),
-                                shoreContainer(context, '${leaveValues['compassionateLeaveRequests'] ?? 0}',13),
-                              ],
-                            ),
-                          SizedBox(height: size.height * 0.010,),
-                          if (leaveTypeExists(filteredLeaveData, 'Marriage Leave'))
-                            Row(
-                              children: [
-                                SizedBox(width: size.width * 0.095),
-                                Text('Marriage Leave',style: TextStyle(color: black,fontFamily: 'Inter',fontSize: 12,fontWeight: FontWeight.bold),),
-                                SizedBox(width: size.width * 0.058),
-                                shoreContainer(context, '${leaveValues['totalMarriageLeave'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.063),
-                                shoreContainer(context, '${leaveValues['marriageLeaveTaken'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.062),
-                                shoreContainer(context, '${leaveValues['marriageLeaveRemaining'] ?? 0}',13),
-                                SizedBox(width: size.width * 0.059),
-                                shoreContainer(context, '${leaveValues['marriageLeaveRequests'] ?? 0}',13),
-                              ],
-                            ),
                           SizedBox(height: size.height * 0.010,),
                         ],
                       ),
@@ -9584,98 +9480,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                             mobileContainer(context, '${leaveValues['unpaidAuthorize'] ?? ''}', 10),
                           ],
                         ),
-                        SizedBox(height: size.height * 0.012,),
-                        if (leaveTypeExists(filteredLeaveData, 'Paternity Leave'))
-                          Row(
-                            children: [
-                              SizedBox(width: size.width * 0.040),
-                              Text(
-                                'Paternity Leave',
-                                style: TextStyle(
-                                    color: black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(width: size.width * 0.099),
-                              mobileContainer(context, '${leaveValues['totalPaternityLeave'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.11),
-                              mobileContainer(context, '${leaveValues['paternityLeaveTaken'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.082),
-                              mobileContainer(context,'${leaveValues['paternityLeaveRemaining'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.089),
-                              mobileContainer(context, '${leaveValues['paternityLeaveRequests'] ?? 0}', 10),
-                            ],
-                          ),
-                        SizedBox(height: size.height * 0.001,),
-                        if (leaveTypeExists(filteredLeaveData, 'Maternity Leave'))
-                          Row(
-                            children: [
-                              SizedBox(width: size.width * 0.040),
-                              Text(
-                                'Maternity Leave',
-                                style: TextStyle(
-                                    color: black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(width: size.width * 0.095),
-                              mobileContainer(context, '${leaveValues['totalMaternityLeave'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.102),
-                              mobileContainer(context, '${leaveValues['maternityLeaveTaken'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.090),
-                              mobileContainer(context, '${leaveValues['maternityLeaveRemaining'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.087),
-                              mobileContainer(context, '${leaveValues['maternityLeaveRequests'] ?? 0}', 10),
-                            ],
-                          ),
-                        SizedBox(height: size.height * 0.01,),
-                        if (leaveTypeExists(filteredLeaveData, 'Compassionate Leave'))
-                          Row(
-                            children: [
-                              SizedBox(width: size.width * 0.040),
-                              Text(
-                                'Compassionate Leave',
-                                style: TextStyle(
-                                    color: black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(width: size.width * 0.022),
-                              mobileContainer(context, '${leaveValues['totalCompassionateLeave'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.11),
-                              mobileContainer(context, '${leaveValues['compassionateLeaveTaken'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.082),
-                              mobileContainer(context, '${leaveValues['compassionateLeaveRemaining'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.09),
-                              mobileContainer(context, '${leaveValues['compassionateLeaveRequests'] ?? 0}', 10),
-                            ],
-                          ),
-                        SizedBox(height: size.height * 0.014,),
-                        if (leaveTypeExists(filteredLeaveData, 'Marriage Leave'))
-                          Row(
-                            children: [
-                              SizedBox(width: size.width * 0.040),
-                              Text(
-                                'Marriage Leave',
-                                style: TextStyle(
-                                    color: black,
-                                    fontFamily: 'Inter',
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(width: size.width * 0.099),
-                              mobileContainer(context, '${leaveValues['totalMarriageLeave'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.112),
-                              mobileContainer(context, '${leaveValues['marriageLeaveTaken'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.083),
-                              mobileContainer(context, '${leaveValues['marriageLeaveRemaining'] ?? 0}', 10),
-                              SizedBox(width: size.width * 0.090),
-                              mobileContainer(context, '${leaveValues['marriageLeaveRequests'] ?? 0}', 10),
-                            ],
-                          ),
+                        SizedBox(height: size.height * 0.010,),
+
                       ],
                     ),
                   )
