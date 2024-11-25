@@ -46,11 +46,11 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   String  department='';
   String Positions ='';
   String doj ='';
-
+//get from work info
   String manager ='';
   String supervisor ='';
   String hr ='';
-
+  // get from empPersonalInfo
   String managerEmail ='';
   String supervisorEmail ='';
   String hrEmail ='';
@@ -159,10 +159,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     }
   }
 
-
   //contact no update
-  Future<void> _updateEmployeeInfo( BuildContext context, String empId, String name,   String contactNo,  String email,
-      ) async {
+  Future<void> _updateEmployeeInfo( BuildContext context, String empId, String name,   String contactNo,  String email,) async {
     try {
       // Fetch the current employee data from the API
       final request = ModelQueries.list(EmpPersonalInfo.classType);
@@ -421,6 +419,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width * 0.015,),
                       Text(employeeName,
+                        overflow: TextOverflow.visible,
                         style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: Colors.black87),),]),
               ),
               SizedBox(height:size.height * 0.010,),
@@ -457,6 +456,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width * 0.015,),
                   Text(
                     employeeEmail,
+                    overflow: TextOverflow.visible,
                     style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: Colors.black87),
                   ),
                 ]),),
@@ -625,6 +625,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     children: [
                       SizedBox(width:size.width * 0.015,),
                       Text(employeeName.isNotEmpty?employeeName :'N/A',
+                        overflow: TextOverflow.visible,
                         style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: Colors.black87),),]),
               ),
               SizedBox(height:size.height * 0.010,),
@@ -661,6 +662,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width * 0.015,),
                   Text(
                     employeeEmail.isNotEmpty?employeeEmail : 'N/A',
+                    overflow: TextOverflow.visible,
                     style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: Colors.black87),
                   ),
                 ]),),
@@ -851,6 +853,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       ),
                       Text(
                         employeeName,
+                        overflow: TextOverflow.visible,
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -921,6 +924,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       ),
                       Text(
                         employeeEmail,
+                        overflow: TextOverflow.visible,
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -3529,11 +3533,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     // Refresh the DataTable to reflect the updated status in UI (if necessary)
   }
 
-  void _phonependingDialog(
-      BuildContext context,
-      int rowIndex,
-      LeaveStatus leave,
-      ) {
+  void _phonependingDialog( BuildContext context,  int rowIndex,   LeaveStatus leave,) {
     final Size size = MediaQuery.of(context).size;
     String status = 'Pending'; // Initialize the status locally
 
@@ -7174,8 +7174,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     }
   }
 
-  Future<void> updateEmailNotificationStatus(
-      String empID, String newStatus, String newMessage, String recipientEmail) async {
+  Future<void> updateEmailNotificationStatus( String empID,String newStatus, String newMessage, String recipientEmail) async {
     try {
       final normalizedEmail = recipientEmail.toLowerCase();
       print('Querying EmailNotifi with empID: $empID and recipientEmail: $normalizedEmail');

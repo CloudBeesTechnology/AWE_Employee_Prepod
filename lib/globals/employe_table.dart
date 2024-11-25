@@ -192,14 +192,16 @@ class _RecentLeaveTableState extends State<RecentLeaveTable> {
                     onTap: () => widget.onCellTap(context, index, leave),
                   ),
                   DataCell(
-                    // Allow text to wrap in the Reason column
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: size.width * 0.15), // You can adjust the max width
-                      child: Text(
-                        leave.reason ?? '',
-                        style: widget.rowTextStyle,
-                        softWrap: true, // This ensures wrapping
-                        overflow: TextOverflow.visible, // Avoids overflow
+                    SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child:  ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: size.width * 0.13), // You can adjust the max width
+                        child: Text(
+                          leave.reason ?? '',
+                          style: widget.rowTextStyle,
+                          softWrap: true, // This ensures wrapping
+                          overflow: TextOverflow.visible, // Avoids overflow
+                        ),
                       ),
                     ),
                     onTap: () => widget.onCellTap(context, index, leave),

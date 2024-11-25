@@ -136,8 +136,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
       fetchLeaveDetails(context),
 
     ]);
-
-
     if (mounted) {
       CalculateLeaveData();
     }
