@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../Components/my_textfield.dart';
 import '../globals/datefield.dart';
 import '../models/EmailNotifi.dart';
+import '../models/EmpLeaveDetails.dart';
 import '../models/LeaveStatus.dart';
 import 'dashboard_screen.dart';
 import 'login_screen.dart';
@@ -43,9 +44,15 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   String  managerEmail='';
   String supervisorEmail ='';
 
-  int annualLeave = 0;
-  int sickLeave = 0;
-  int totalLeave = 0;
+  String annualLeave = '';
+  String sickLeave = '';
+  String compasLeave = '';
+  String mrageLeave = '';
+  String paterLeave = '';
+  String materLeave = '';
+
+
+
 
 
 
@@ -93,24 +100,12 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
     department = box.read('department') ?? 'N/A';
     managerEmail = box.read('managerEmail') ?? 'N/A';
     supervisorEmail = box.read('supervisorEmail') ?? 'N/A';
-
       supervisorName =box.read('supervisorName') ?? 'N/A';
      managerName=box.read('managerName') ?? 'N/A';
-
-    final String annualLeaveStr = box.read('annualLeave') ?? '0';
-    final String sickLeaveStr = box.read('sickLeave') ?? '0';
-
-    // Parsing values and calculating total
-    annualLeave = int.tryParse(annualLeaveStr) ?? 0;
-    sickLeave = int.tryParse(sickLeaveStr) ?? 0;
-    totalLeave = annualLeave + sickLeave;
-    print(totalLeave);
-
-
-    // Debugging: Check gender value
     gender = (box.read('gender') ?? 'N/A').toLowerCase(); // Normalize gender to lowercase
     print('Gender fetched from GetStorage: $gender'); // Verify gender value
 
+    initializeData();
 
     // Filter leave types based on gender
     setState(() {
@@ -134,7 +129,492 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
     });
   }
 
+  Future<void> initializeData() async {
+    // Wait for all data-fetching functions to complete
+    await Future.wait([
+      fetchLeaveData(),
+      fetchLeaveDetails(context),
 
+    ]);
+
+
+    if (mounted) {
+      CalculateLeaveData();
+    }
+  }
+
+  List<LeaveStatus?> allLeaveData = []; // Your leave data
+  List<LeaveStatus?> filteredLeaveData = [];
+
+  Future<void> fetchLeaveData() async {
+    try {
+
+
+      final box = GetStorage();
+      String empId = box.read('userId') ?? '';
+
+      final request = ModelQueries.list(
+        LeaveStatus.classType,
+        where: LeaveStatus.EMPID.eq(empId),
+      );
+
+      final response = await Amplify.API.query(request: request).response;
+      // print(response.data);
+
+      if (response.errors.isNotEmpty || response.data == null) {
+        print('Errors: ${response.errors}');
+        // _showAlertDialog('Error', 'Failed to fetch leave data.');
+
+        return;
+      }
+
+      setState(() {
+        allLeaveData = response.data!.items
+            .where((leave) => leave != null)
+            .cast<LeaveStatus>()
+            .toList();
+
+        // Format the dates to local time
+        var leaveDates = allLeaveData.map((leave) {
+          // Assuming `fromDate` and `toDate` are TemporalDate
+          String formattedFromDate = leave!.fromDate != null
+              ? DateFormat('dd/MM/yyyy').format(leave.fromDate!.getDateTimeInUtc().toLocal())
+              : 'No Date';
+
+          String formattedToDate = leave.toDate != null
+              ? DateFormat('dd/MM/yyyy').format(leave.toDate!.getDateTimeInUtc().toLocal())
+              : 'No Date';
+
+          // Print formatted dates for debugging
+          // print('From Date: $formattedFromDate, To Date: $formattedToDate');
+
+          return {
+            'leave': leave,
+            'formattedFromDate': formattedFromDate,
+            'formattedToDate': formattedToDate,
+          };
+        }).toList();
+
+        // Keep the original list structure
+        allLeaveData = leaveDates.map((item) => item['leave'] as LeaveStatus).toList();
+
+        // Sort by 'createdAt' in descending order
+        allLeaveData.sort((a, b) {
+          DateTime dateA = DateTime.parse(a!.createdAt.toString());
+          DateTime dateB = DateTime.parse(b!.createdAt.toString());
+          return dateB.compareTo(dateA);
+        });
+
+        filteredLeaveData = List.from(allLeaveData);
+
+      });
+
+      if (allLeaveData.isEmpty) {
+        print('No leave data found for the user.');
+      }
+    } catch (e) {
+
+      print('Failed to fetch leave data: $e');
+      // _showAlertDialog('Error', 'An unexpected error occurred.');
+    }
+  }
+
+  Future<void> fetchLeaveDetails(BuildContext context) async {
+    try {
+      final box = GetStorage();
+      String empId = box.read('userId') ?? '';
+      print('Fetched empID: $empId');
+
+      if (empId.isEmpty) return;
+
+      final request = ModelQueries.list(EmpLeaveDetails.classType);
+      final response = await Amplify.API.query(request: request).response;
+
+      if (response.errors.isNotEmpty) {
+        print('Errors: ${response.errors}');
+        return;
+      }
+
+      List<EmpLeaveDetails?> employeeInfos = (response.data?.items as List?)?.cast<EmpLeaveDetails?>() ?? [];
+
+      if (employeeInfos.isNotEmpty) {
+        EmpLeaveDetails? employeeInfo = employeeInfos.firstWhere(
+              (e) => e?.empID == empId,
+          orElse: () => null,
+        );
+        print(employeeInfo);
+
+        if (employeeInfo != null) {
+          // Store everything as String in GetStorage
+          box.write('annualLeave', (employeeInfo.annualLeave?.isNotEmpty ?? false) ? employeeInfo.annualLeave!.join(', ') : '0');
+          box.write('sickLeave', employeeInfo.sickLeave?.toString() ?? '0');
+          box.write('paterLeave', (employeeInfo.paterLeave?.isNotEmpty ?? false) ? employeeInfo.paterLeave!.join(', ') : '0');
+          box.write('materLeave', (employeeInfo.materLeave?.isNotEmpty ?? false) ? employeeInfo.materLeave!.join(', ') : '0');
+          box.write('mrageLeave', employeeInfo.mrageLeave ?? '0');
+          box.write('compasLeave', employeeInfo.compasLeave ?? '0');
+
+          setState(() {
+            annualLeave = box.read('annualLeave') ?? '0';
+            sickLeave = box.read('sickLeave') ?? '0';
+            paterLeave = box.read('paterLeave') ?? '0';
+            materLeave = box.read('materLeave') ?? '0';
+            mrageLeave = box.read('mrageLeave') ?? '0';
+            compasLeave = box.read('compasLeave') ?? '0';
+          });
+        } else {
+          print('No matching work data found for user: $empId');
+        }
+      } else {
+        print('No work data found.');
+      }
+    } catch (e) {
+      print('Failed to fetch empworkinfo: $e');
+    }
+  }
+
+  Map<String, int> calculateLeaveValues(List<LeaveStatus> leaveList) {
+    int totalAnnualLeave = int.tryParse(annualLeave) ?? 0;
+    int totalSickLeave = int.tryParse(sickLeave) ?? 0;
+    int totalMaternityLeave = int.tryParse(materLeave) ?? 0;
+    int totalPaternityLeave = int.tryParse(paterLeave) ?? 0;
+    int totalMarriageLeave = int.tryParse(mrageLeave) ?? 0;
+    int totalCompassionateLeave = int.tryParse(compasLeave) ?? 0;
+    int unpaidAuthorize = 0;
+
+    int annualLeaveTaken = 0;
+    int sickLeaveTaken = 0;
+    int maternityLeaveTaken = 0;
+    int paternityLeaveTaken = 0;
+    int marriageLeaveTaken = 0;
+    int compassionateLeaveTaken = 0;
+
+    int annualLeaveRequests = 0;
+    int sickLeaveRequests = 0;
+    int maternityLeaveRequests = 0;
+    int paternityLeaveRequests = 0;
+    int marriageLeaveRequests = 0;
+    int compassionateLeaveRequests = 0;
+
+    int annualLeaveRemaining = totalAnnualLeave;
+    int sickLeaveRemaining = totalSickLeave;
+    int maternityLeaveRemaining = totalMaternityLeave;
+    int paternityLeaveRemaining = totalPaternityLeave;
+    int marriageLeaveRemaining = totalMarriageLeave;
+    int compassionateLeaveRemaining = totalCompassionateLeave;
+
+    for (var leave in leaveList) {
+      if (leave.empStatus == 'Pending') {
+        String effectiveLeaveType = leave.leaveType;
+
+        // Compassionate leave handling when compassionate leave is exhausted
+        if (compassionateLeaveRemaining <= 0 && leave.leaveType == 'Compassionate Leave') {
+          // Treat exhausted compassionate leave as annual leave
+          effectiveLeaveType = 'Annual Leave';
+        }
+
+        if (leave.supervisorStatus == 'Pending' && leave.managerStatus == 'Pending') {
+          switch (effectiveLeaveType) {
+            case 'Annual Leave':
+              annualLeaveRequests++;
+              break;
+            case 'Sick Leave':
+            case 'Hospitalisation Leave':
+              sickLeaveRequests++;
+              break;
+            case 'Maternity Leave':
+              maternityLeaveRequests++;
+              break;
+            case 'Paternity Leave':
+              paternityLeaveRequests++;
+              break;
+            case 'Marriage Leave':
+              marriageLeaveRequests++;
+              break;
+            case 'Compassionate Leave':
+              compassionateLeaveRequests++;
+              break;
+          }
+        }
+
+        if (leave.empStatus == 'Cancelled' && leave.supervisorStatus == 'Pending' && leave.managerStatus == 'Pending') {
+          switch (effectiveLeaveType) {
+            case 'Annual Leave':
+              annualLeaveRequests--;
+              break;
+            case 'Sick Leave':
+            case 'Hospitalisation Leave':
+              sickLeaveRequests--;
+              break;
+            case 'Maternity Leave':
+              maternityLeaveRequests--;
+              break;
+            case 'Paternity Leave':
+              paternityLeaveRequests--;
+              break;
+            case 'Marriage Leave':
+              marriageLeaveRequests--;
+              break;
+            case 'Compassionate Leave':
+              compassionateLeaveRequests--;
+              break;
+          }
+        }
+        if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Rejected' && leave.managerStatus == 'Pending') {
+          switch (effectiveLeaveType) {
+            case 'Annual Leave':
+              annualLeaveRequests--;
+              break;
+            case 'Sick Leave':
+            case 'Hospitalisation Leave':
+              sickLeaveRequests--;
+              break;
+            case 'Maternity Leave':
+              maternityLeaveRequests--;
+              break;
+            case 'Paternity Leave':
+              paternityLeaveRequests--;
+              break;
+            case 'Marriage Leave':
+              marriageLeaveRequests--;
+              break;
+            case 'Compassionate Leave':
+              compassionateLeaveRequests--;
+              break;
+          }
+        }
+
+        if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Pending' && leave.managerStatus == 'Rejected') {
+          switch (effectiveLeaveType) {
+            case 'Annual Leave':
+              annualLeaveRequests--;
+              break;
+            case 'Sick Leave':
+            case 'Hospitalisation Leave':
+              sickLeaveRequests--;
+              break;
+            case 'Maternity Leave':
+              maternityLeaveRequests--;
+              break;
+            case 'Paternity Leave':
+              paternityLeaveRequests--;
+              break;
+            case 'Marriage Leave':
+              marriageLeaveRequests--;
+              break;
+            case 'Compassionate Leave':
+              compassionateLeaveRequests--;
+              break;
+          }
+        }
+
+
+
+        // Handling approved leave requests by supervisor and manager
+        if (leave.empStatus == 'Pending' && leave.supervisorStatus == 'Approved' && leave.managerStatus == 'Approved') {
+          int approvedDays = leave.days?.toInt() ?? 0;
+
+          switch (effectiveLeaveType) {
+            case 'Marriage Leave':
+              if (approvedDays > marriageLeaveRemaining) {
+                int excessDays = approvedDays - marriageLeaveRemaining;
+                marriageLeaveTaken += marriageLeaveRemaining;
+                marriageLeaveRemaining = 0;
+
+                if (annualLeaveRemaining >= excessDays) {
+                  annualLeaveTaken += excessDays;
+                  annualLeaveRemaining -= excessDays;
+                } else {
+                  int leftover = excessDays - annualLeaveRemaining;
+                  annualLeaveTaken += annualLeaveRemaining;
+                  annualLeaveRemaining = 0;
+
+                  sickLeaveTaken += leftover;
+                  sickLeaveRemaining -= leftover;
+                }
+              } else {
+                marriageLeaveTaken += approvedDays;
+                marriageLeaveRemaining -= approvedDays;
+              }
+              break;
+
+            case 'Paternity Leave':
+              if (approvedDays > paternityLeaveRemaining) {
+                int excessDays = approvedDays - paternityLeaveRemaining;
+                paternityLeaveTaken += paternityLeaveRemaining;
+                paternityLeaveRemaining = 0;
+
+                if (annualLeaveRemaining >= excessDays) {
+                  annualLeaveTaken += excessDays;
+                  annualLeaveRemaining -= excessDays;
+                } else {
+                  int leftover = excessDays - annualLeaveRemaining;
+                  annualLeaveTaken += annualLeaveRemaining;
+                  annualLeaveRemaining = 0;
+
+                  sickLeaveTaken += leftover;
+                  sickLeaveRemaining -= leftover;
+                }
+              } else {
+                paternityLeaveTaken += approvedDays;
+                paternityLeaveRemaining -= approvedDays;
+              }
+              break;
+
+            case 'Annual Leave':
+              annualLeaveTaken += approvedDays;
+              annualLeaveRemaining -= approvedDays;
+              break;
+
+            case 'Sick Leave':
+            case 'Hospitalisation Leave':
+              sickLeaveTaken += approvedDays;
+              sickLeaveRemaining -= approvedDays;
+              break;
+
+            case 'Maternity Leave':
+              maternityLeaveTaken += approvedDays;
+              maternityLeaveRemaining -= approvedDays;
+              break;
+
+            case 'Compassionate Leave':
+              compassionateLeaveTaken += approvedDays;
+              compassionateLeaveRemaining -= approvedDays;
+              break;
+          }
+        }
+
+        // Handling cancelled leave requests
+        if (leave.empStatus == 'Cancelled' && leave.managerStatus == 'Approved') {
+          int canceledDays = leave.days?.toInt() ?? 0;
+
+          switch (effectiveLeaveType) {
+            case 'Marriage Leave':
+              marriageLeaveTaken -= canceledDays;
+              marriageLeaveRemaining += canceledDays;
+              break;
+            case 'Paternity Leave':
+              paternityLeaveTaken -= canceledDays;
+              paternityLeaveRemaining += canceledDays;
+              break;
+            case 'Annual Leave':
+              annualLeaveTaken -= canceledDays;
+              annualLeaveRemaining += canceledDays;
+              break;
+            case 'Sick Leave':
+            case 'Hospitalisation Leave':
+              sickLeaveTaken -= canceledDays;
+              sickLeaveRemaining += canceledDays;
+              break;
+            case 'Maternity Leave':
+              maternityLeaveTaken -= canceledDays;
+              maternityLeaveRemaining += canceledDays;
+              break;
+            case 'Compassionate Leave':
+              compassionateLeaveTaken -= canceledDays;
+              compassionateLeaveRemaining += canceledDays;
+              break;
+          }
+        }
+
+        // Add unpaid authorize when all leave types are exhausted
+        if ((annualLeaveRemaining <= 0 && sickLeaveRemaining <= 0 ) &&
+            (leave.leaveType == 'Annual Leave' || leave.leaveType == 'Sick Leave') &&
+            leave.empStatus == 'Pending' &&
+            leave.supervisorStatus == 'Approved' &&
+            leave.managerStatus == 'Approved') {
+
+          // Add the leave days to unpaid authorize
+          unpaidAuthorize += leave.days?.toInt() ?? 0;
+        }
+      }
+    }
+
+    // Ensure no negative remaining days for any leave type
+    annualLeaveRemaining = annualLeaveRemaining < 0 ? 0 : annualLeaveRemaining;
+    sickLeaveRemaining = sickLeaveRemaining < 0 ? 0 : sickLeaveRemaining;
+    compassionateLeaveRemaining = compassionateLeaveRemaining < 0 ? 0 : compassionateLeaveRemaining;
+
+    // Ensure requests are non-negative
+    annualLeaveRequests = annualLeaveRequests < 0 ? 0 : annualLeaveRequests;
+    sickLeaveRequests = sickLeaveRequests < 0 ? 0 : sickLeaveRequests;
+    maternityLeaveRequests = maternityLeaveRequests < 0 ? 0 : maternityLeaveRequests;
+    paternityLeaveRequests = paternityLeaveRequests < 0 ? 0 : paternityLeaveRequests;
+    marriageLeaveRequests = marriageLeaveRequests < 0 ? 0 : marriageLeaveRequests;
+    compassionateLeaveRequests = compassionateLeaveRequests < 0 ? 0 : compassionateLeaveRequests;
+
+    // Print calculated leave values for debugging
+    print("Annual Leave Remaining: $annualLeaveRemaining");
+    print("Sick Leave Remaining: $sickLeaveRemaining");
+    print("Maternity Leave Remaining: $maternityLeaveRemaining");
+    print("Paternity Leave Remaining: $paternityLeaveRemaining");
+    print("Marriage Leave Remaining: $marriageLeaveRemaining");
+    print("Compassionate Leave Remaining: $compassionateLeaveRemaining");
+
+    return {
+      'totalAnnualLeave': totalAnnualLeave,
+      'totalSickLeave': totalSickLeave,
+      'totalMaternityLeave': totalMaternityLeave,
+      'totalPaternityLeave': totalPaternityLeave,
+      'totalMarriageLeave': totalMarriageLeave,
+      'totalCompassionateLeave': totalCompassionateLeave,
+      'annualLeaveTaken': annualLeaveTaken,
+      'sickLeaveTaken': sickLeaveTaken,
+      'maternityLeaveTaken': maternityLeaveTaken,
+      'paternityLeaveTaken': paternityLeaveTaken,
+      'marriageLeaveTaken': marriageLeaveTaken,
+      'compassionateLeaveTaken': compassionateLeaveTaken,
+      'unpaidAuthorize': unpaidAuthorize,
+      'annualLeaveRemaining': annualLeaveRemaining,
+      'sickLeaveRemaining': sickLeaveRemaining,
+      'maternityLeaveRemaining': maternityLeaveRemaining,
+      'paternityLeaveRemaining': paternityLeaveRemaining,
+      'marriageLeaveRemaining': marriageLeaveRemaining,
+      'compassionateLeaveRemaining': compassionateLeaveRemaining,
+      'annualLeaveRequests': annualLeaveRequests,
+      'sickLeaveRequests': sickLeaveRequests,
+      'maternityLeaveRequests': maternityLeaveRequests,
+      'paternityLeaveRequests': paternityLeaveRequests,
+      'marriageLeaveRequests': marriageLeaveRequests,
+      'compassionateLeaveRequests': compassionateLeaveRequests,
+    };
+  }
+
+  Map<String, int> leaveValues = {};
+
+  Future<void> CalculateLeaveData() async {
+    // Fetch leave data for the current employee
+    await fetchLeaveData();
+
+    // Calculate leave values using the filtered, non-null data
+    leaveValues = calculateLeaveValues(allLeaveData.where((leave) => leave != null).cast<LeaveStatus>().toList());
+
+    print('Calculated leave values: $leaveValues');
+
+    // Trigger UI update
+    setState(() {});
+  }
+
+  String getLeaveBalance(String? leaveType) {
+    if (leaveType == null) return "0";
+
+    switch (leaveType) {
+      case 'Annual Leave':
+        return leaveValues['annualLeaveRemaining']?.toString() ?? "0";
+      case 'Sick Leave':
+        return leaveValues['sickLeaveRemaining']?.toString() ?? "0";
+      case 'Maternity Leave':
+        return leaveValues['maternityLeaveRemaining']?.toString() ?? "0";
+      case 'Paternity Leave':
+        return leaveValues['paternityLeaveRemaining']?.toString() ?? "0";
+      case 'Marriage Leave':
+        return leaveValues['marriageLeaveRemaining']?.toString() ?? "0";
+      case 'Compassionate Leave':
+        return leaveValues['compassionateLeaveRemaining']?.toString() ?? "0";
+      default:
+        print("Unknown leave type: $leaveType");
+        return "0";
+    }
+  }
 
   Future<void> _selectDate(BuildContext context, TextEditingController controller, bool isFromDate) async {
     DateTime initialDate = DateTime.now(); // Default to current date for initial selection
@@ -911,7 +1391,18 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               SizedBox(width: size.width * 0.047),
                               Text('Leave balance:',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black,fontWeight: FontWeight.bold),),
                               SizedBox(width: size.width * 0.018),
-                              webContainer(context, '${totalLeave}'),
+                              Container(
+                                width: size.width * 0.123,
+                                height: size.width * 0.018,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: Colors.grey.shade400,width: 1)
+                                ),
+                                child: Padding(
+                                  padding:  EdgeInsets.all( 4.0),
+                                  child: Text(getLeaveBalance(_selectedLeaveType),style: TextStyle(color: Colors.grey.shade500,fontFamily: 'Inter',fontSize: 14),),
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(height: size.height * 0.025,),
@@ -1278,7 +1769,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               SizedBox(width: size.width * 0.22,),
                               OutlinedButton(
                                 onPressed: () {
-                                  Get.off(DashBoardScreeen());
+                                Get.back();
                                 },
                                 style: OutlinedButton.styleFrom(
                                   minimumSize: Size(size.width * 0.070, size.height * 0.050), // Similar to minWidth and height in MaterialButton
@@ -1373,8 +1864,13 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                             alignment: Alignment.bottomRight,
                             children: [
                               CircleAvatar(
+                                backgroundImage: image.isNotEmpty && Uri.tryParse(image)?.hasAbsolutePath == true
+                                    ? NetworkImage(image) // Valid URL
+                                    : null, // Fallback if image URL is empty or invalid
                                 radius: 21,
-                                child: Image.asset('assets/images/user image.png'),
+                                child: image.isEmpty
+                                    ? Icon(Icons.person, size: 22) // Icon as a fallback
+                                    : null, // No child needed if there's an image
                               ),
                             ],
                           ),
@@ -1523,7 +2019,18 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                             SizedBox(width: size.width * 0.065),
                             Text('Leave Balance:',style: TextStyle(fontFamily: 'Inter',fontSize: 15,color: black,fontWeight: FontWeight.bold),),
                             SizedBox(width: size.width * 0.018),
-                            tabContainer(context, '${totalLeave}'),
+                            Container(
+                              width: size.width * 0.16,
+                              height: size.width * 0.025,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.grey.shade400,width: 1)
+                              ),
+                              child: Padding(
+                                padding:  EdgeInsets.all( 4.0),
+                                child: Text(getLeaveBalance(_selectedLeaveType),style: TextStyle(color: Colors.grey.shade500,fontFamily: 'Inter',fontSize: 14),),
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(height: size.height * 0.04,),
@@ -1906,7 +2413,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                             SizedBox(width: size.width * 0.25,),
                             OutlinedButton(
                               onPressed: () {
-                                Get.off(DashBoardScreeen());
+                                Get.back();
                               },
                               style: OutlinedButton.styleFrom(
                                 minimumSize: Size(size.width * 0.10, size.height * 0.050), // Similar to minWidth and height in MaterialButton
@@ -2149,7 +2656,23 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                             ),
                           ),
                           SizedBox(width: size.width * 0.011),
-                          phoneContainer(context, '${totalLeave}'),
+                          Container(
+                            width: size.width * 0.207,
+                            height: size.height * 0.030,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey.shade400, width: 1.2),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(3.0),
+                              child: Text(
+                                getLeaveBalance(_selectedLeaveType),
+                                style: TextStyle(
+                                    color: Colors.grey.shade500, fontFamily: 'Inter', fontSize: 13),
+                              ),
+                            ),
+                          ),
                           SizedBox(width: size.width * 0.079),
                           Text(
                             'Half day:',
