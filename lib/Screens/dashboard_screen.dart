@@ -7625,16 +7625,38 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   }
   // Function to calculate leave values
   Map<String, int> calculateLeaveValues(List<LeaveStatus> leaveList) {
+    int currentYear = DateTime.now().year;
+
+    // Define the necessary variables
+    int lastCalculatedYear = currentYear;  // Initialize the lastCalculatedYear
     int totalAnnualLeave = int.tryParse(annualLeave) ?? 0;
     int totalSickLeave = int.tryParse(sickLeave) ?? 0;
-    int totalMaternityLeave = int.tryParse(materLeave) ?? 91;
-    int totalPaternityLeave = int.tryParse(paterLeave) ?? 2;
-    int totalMarriageLeave = int.tryParse(mrageLeave) ?? 1;
-    int totalCompassionateLeave = int.tryParse(compasLeave) ?? 2;
-    int unpaidAuthorize = 0;
+    int totalHospitalisationLeave =  60;
+    int totalMaternityLeave = int.tryParse(materLeave) ?? 0;
+    int totalPaternityLeave = int.tryParse(paterLeave) ?? 0;
+    int totalMarriageLeave = int.tryParse(mrageLeave) ?? 0;
+    int totalCompassionateLeave = int.tryParse(compasLeave) ?? 0;
+    int unpaidAuthorize = 0;  // Initialize unpaidAuthorize
+
+    // Check if the leave data needs to be reset for a new year
+    if (lastCalculatedYear != currentYear) {
+      // Reset total leaves to the default values for a new year
+      totalAnnualLeave = int.tryParse(annualLeave) ?? 0;
+      totalSickLeave = int.tryParse(sickLeave) ?? 0;
+      totalHospitalisationLeave = 60;
+      totalMaternityLeave = int.tryParse(materLeave) ?? 0;
+      totalPaternityLeave = int.tryParse(paterLeave) ?? 0;
+      totalMarriageLeave = int.tryParse(mrageLeave) ?? 0;
+      totalCompassionateLeave = int.tryParse(compasLeave) ?? 0;
+      unpaidAuthorize = 0;
+      // Update the last calculated year
+      lastCalculatedYear = currentYear;
+    }
+
 
     int annualLeaveTaken = 0;
     int sickLeaveTaken = 0;
+    int hospitalisationLeaveTaken = 0;
     int maternityLeaveTaken = 0;
     int paternityLeaveTaken = 0;
     int marriageLeaveTaken = 0;
@@ -7642,6 +7664,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
     int annualLeaveRequests = 0;
     int sickLeaveRequests = 0;
+    int hospitalisationLeaveRequests = 0;
     int maternityLeaveRequests = 0;
     int paternityLeaveRequests = 0;
     int marriageLeaveRequests = 0;
@@ -7649,6 +7672,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
     int annualLeaveRemaining = totalAnnualLeave;
     int sickLeaveRemaining = totalSickLeave;
+    int hospitalisationLeaveRemaining = totalHospitalisationLeave;
     int maternityLeaveRemaining = totalMaternityLeave;
     int paternityLeaveRemaining = totalPaternityLeave;
     int marriageLeaveRemaining = totalMarriageLeave;
@@ -7670,8 +7694,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               annualLeaveRequests++;
               break;
             case 'Sick Leave':
-            case 'Hospitalisation Leave':
               sickLeaveRequests++;
+              break;
+            case 'Hospitalisation Leave':
+              hospitalisationLeaveRequests++;
               break;
             case 'Maternity Leave':
               maternityLeaveRequests++;
@@ -7694,8 +7720,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               annualLeaveRequests--;
               break;
             case 'Sick Leave':
-            case 'Hospitalisation Leave':
               sickLeaveRequests--;
+              break;
+            case 'Hospitalisation Leave':
+              hospitalisationLeaveRequests--;
               break;
             case 'Maternity Leave':
               maternityLeaveRequests--;
@@ -7717,8 +7745,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               annualLeaveRequests--;
               break;
             case 'Sick Leave':
-            case 'Hospitalisation Leave':
               sickLeaveRequests--;
+              break;
+            case 'Hospitalisation Leave':
+              hospitalisationLeaveRequests --;
               break;
             case 'Maternity Leave':
               maternityLeaveRequests--;
@@ -7741,8 +7771,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               annualLeaveRequests--;
               break;
             case 'Sick Leave':
-            case 'Hospitalisation Leave':
               sickLeaveRequests--;
+              break;
+            case 'Hospitalisation Leave':
+              hospitalisationLeaveRequests--;
               break;
             case 'Maternity Leave':
               maternityLeaveRequests--;
@@ -7818,9 +7850,13 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               break;
 
             case 'Sick Leave':
-            case 'Hospitalisation Leave':
               sickLeaveTaken += approvedDays;
               sickLeaveRemaining -= approvedDays;
+              break;
+
+            case 'Hospitalisation Leave':
+              hospitalisationLeaveTaken += approvedDays;
+              hospitalisationLeaveRemaining -= approvedDays;
               break;
 
             case 'Maternity Leave':
@@ -7853,9 +7889,12 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               annualLeaveRemaining += canceledDays;
               break;
             case 'Sick Leave':
-            case 'Hospitalisation Leave':
               sickLeaveTaken -= canceledDays;
               sickLeaveRemaining += canceledDays;
+              break;
+            case 'Hospitalisation Leave':
+              hospitalisationLeaveTaken -= canceledDays;
+              hospitalisationLeaveRemaining += canceledDays;
               break;
             case 'Maternity Leave':
               maternityLeaveTaken -= canceledDays;
@@ -7869,15 +7908,31 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
         }
 
         // Add unpaid authorize when all leave types are exhausted
-        if ((annualLeaveRemaining <= 0 && sickLeaveRemaining <= 0 ) &&
-            (leave.leaveType == 'Annual Leave' || leave.leaveType == 'Sick Leave') &&
-            leave.empStatus == 'Pending' &&
-            leave.supervisorStatus == 'Approved' &&
-            leave.managerStatus == 'Approved') {
+        if (annualLeaveRemaining <= 0 && sickLeaveRemaining <= 0) {
+          // Condition 1: Annual or Sick Leave
+          if ((leave.leaveType == 'Annual Leave' || leave.leaveType == 'Sick Leave') &&
+              leave.empStatus == 'Pending' &&
+              leave.supervisorStatus == 'Approved' &&
+              leave.managerStatus == 'Approved') {
+            unpaidAuthorize += leave.days?.toInt() ?? 0;
+          }
+          // Condition 2: Compassionate, Marriage, or Paternity Leave
+          if ((leave.leaveType == 'Compassionate Leave' && compassionateLeaveRemaining <= 0) ||
+              (leave.leaveType == 'Marriage Leave' && marriageLeaveRemaining <= 0) ||
+              (leave.leaveType == 'Paternity Leave' && paternityLeaveRemaining <= 0)) {
+            print('Leave Type: ${leave.leaveType}, Compassionate Leave Remaining: $compassionateLeaveRemaining');
+            if (leave.empStatus == 'Pending' &&
+                leave.supervisorStatus == 'Approved' &&
+                leave.managerStatus == 'Approved') {
+              print('Adding extra days to Unpaid Leave: ${leave.days}');
+              unpaidAuthorize += leave.days?.toInt() ?? 0;
+            } else {
+              print('Leave not approved or in pending status');
+            }
+          }
 
-          // Add the leave days to unpaid authorize
-          unpaidAuthorize += leave.days?.toInt() ?? 0;
         }
+
       }
     }
 
@@ -7885,10 +7940,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     annualLeaveRemaining = annualLeaveRemaining < 0 ? 0 : annualLeaveRemaining;
     sickLeaveRemaining = sickLeaveRemaining < 0 ? 0 : sickLeaveRemaining;
     compassionateLeaveRemaining = compassionateLeaveRemaining < 0 ? 0 : compassionateLeaveRemaining;
+    marriageLeaveRemaining = marriageLeaveRemaining < 0 ? 0 : marriageLeaveRemaining;
+    paternityLeaveRemaining = paternityLeaveRemaining < 0 ? 0: paternityLeaveRemaining;
+    hospitalisationLeaveRemaining =hospitalisationLeaveRemaining < 0 ? 0: hospitalisationLeaveRemaining;
+    maternityLeaveRemaining = maternityLeaveRemaining < 0 ? 0: maternityLeaveRemaining;
 
     // Ensure requests are non-negative
     annualLeaveRequests = annualLeaveRequests < 0 ? 0 : annualLeaveRequests;
     sickLeaveRequests = sickLeaveRequests < 0 ? 0 : sickLeaveRequests;
+    hospitalisationLeaveRequests = hospitalisationLeaveRequests < 0 ? 0 : hospitalisationLeaveRequests;
     maternityLeaveRequests = maternityLeaveRequests < 0 ? 0 : maternityLeaveRequests;
     paternityLeaveRequests = paternityLeaveRequests < 0 ? 0 : paternityLeaveRequests;
     marriageLeaveRequests = marriageLeaveRequests < 0 ? 0 : marriageLeaveRequests;
@@ -7897,12 +7957,14 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     return {
       'totalAnnualLeave': totalAnnualLeave,
       'totalSickLeave': totalSickLeave,
+      'totalHospitalisationLeave':totalHospitalisationLeave,
       'totalMaternityLeave': totalMaternityLeave,
       'totalPaternityLeave': totalPaternityLeave,
       'totalMarriageLeave': totalMarriageLeave,
       'totalCompassionateLeave': totalCompassionateLeave,
       'annualLeaveTaken': annualLeaveTaken,
       'sickLeaveTaken': sickLeaveTaken,
+      'hospitalisationLeaveTaken':hospitalisationLeaveTaken,
       'maternityLeaveTaken': maternityLeaveTaken,
       'paternityLeaveTaken': paternityLeaveTaken,
       'marriageLeaveTaken': marriageLeaveTaken,
@@ -7910,12 +7972,14 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       'unpaidAuthorize': unpaidAuthorize,
       'annualLeaveRemaining': annualLeaveRemaining,
       'sickLeaveRemaining': sickLeaveRemaining,
+      'hospitalisationLeaveRemaining':hospitalisationLeaveRemaining,
       'maternityLeaveRemaining': maternityLeaveRemaining,
       'paternityLeaveRemaining': paternityLeaveRemaining,
       'marriageLeaveRemaining': marriageLeaveRemaining,
       'compassionateLeaveRemaining': compassionateLeaveRemaining,
       'annualLeaveRequests': annualLeaveRequests,
       'sickLeaveRequests': sickLeaveRequests,
+      'hospitalisationLeaveRequests':hospitalisationLeaveRequests,
       'maternityLeaveRequests': maternityLeaveRequests,
       'paternityLeaveRequests': paternityLeaveRequests,
       'marriageLeaveRequests': marriageLeaveRequests,
