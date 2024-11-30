@@ -65,8 +65,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   String selectedMessage = '';
 
   //leaves
-  String annualLeave = '0';
-  String sickLeave = '0';
+  String annualLeave = '';
+  String sickLeave = '';
   String compasLeave = '';
   String mrageLeave = '';
   String paterLeave = '';
@@ -160,7 +160,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   }
 
   //contact no update
-  Future<void> _updateEmployeeInfo( BuildContext context, String empId, String name,   String contactNo,  String email,) async {
+  Future<void> _updateEmployeeInfo( BuildContext context, String empId, String name, String contactNo,  String email,) async {
     try {
       // Fetch the current employee data from the API
       final request = ModelQueries.list(EmpPersonalInfo.classType);
@@ -418,7 +418,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 child: Row(
                     children: [
                       SizedBox(width:size.width * 0.015,),
-                      Text(employeeName,
+                      Text(employeeName.isNotEmpty ? employeeName :'N/A',
                         overflow: TextOverflow.visible,
                         style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: Colors.black87),),]),
               ),
@@ -437,7 +437,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 child: Row(children: [
                   SizedBox(width:size.width * 0.015,),
                   Text(
-                    contactNo,
+                    contactNo.isNotEmpty ? contactNo:'N/A',
                     style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: Colors.black87),),
                 ]),),
               SizedBox(height:size.height * 0.010,),
@@ -455,7 +455,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 child:Row(children: [
                   SizedBox(width:size.width * 0.015,),
                   Text(
-                    employeeEmail,
+                    employeeEmail.isNotEmpty ? employeeEmail:'N/A',
                     overflow: TextOverflow.visible,
                     style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: Colors.black87),
                   ),
@@ -852,7 +852,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.025,
                       ),
                       Text(
-                        employeeName,
+                        employeeName.isNotEmpty ? employeeName :'N/A',
                         overflow: TextOverflow.visible,
                         style: TextStyle(
                             fontSize: 12,
@@ -888,7 +888,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.025,
                       ),
                       Text(
-                        contactNo,
+                        contactNo.isNotEmpty ? contactNo : 'N/A',
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -923,7 +923,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.025,
                       ),
                       Text(
-                        employeeEmail,
+                        employeeEmail.isNotEmpty ? employeeEmail:'N/A',
                         overflow: TextOverflow.visible,
                         style: TextStyle(
                             fontSize: 12,
@@ -2754,6 +2754,10 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       await storeTicketEmailNotification(empId,  'leave_no-reply@adininworks.com', hrEmail);
                     }
                   }
+                  bool hrEmailSent = await sendTicketEmail('Hr-notification@adininworks.com', employeeName);
+                  if (hrEmailSent) {
+                    print('Email send to hrportal : ${hrEmailSent}');
+                  }
                 },
               );
             } else {
@@ -2774,8 +2778,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   Future<bool> sendTicketEmail(String hrEmail, String employeeName) async {
     // Create an instance of the AWS SES client
     final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
-      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+      accessKey: 'AKIAQXPZCWE7WAE2226P',
+      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your AWS
     );
 
     final ses = SES(
@@ -3243,7 +3247,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.050,),
                       Text('Job Title',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                       SizedBox(width:size.width *  0.048,),
-                      Text(Positions.isNotEmpty ? Positions : 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            Positions.isNotEmpty ? Positions : 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -3593,7 +3606,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       ),
                       SizedBox(width: size.width * 0.16),
                       Text(
-                        employeeName,
+                        employeeName.isNotEmpty ? employeeName : 'N/A',
                         style: TextStyle(
                             fontFamily: 'Inter', fontSize: 13, color: black),
                       ),
@@ -3617,7 +3630,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.12,
                       ),
                       Text(
-                        Positions,
+                        Positions.isNotEmpty ? Positions:'N/A',
                         style: TextStyle(
                             fontFamily: 'Inter', fontSize: 13, color: black),
                       ),
@@ -3641,7 +3654,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.16,
                       ),
                       Text(
-                        badgeno,
+                        badgeno.isNotEmpty ? badgeno :'N/A',
                         style: TextStyle(
                             fontFamily: 'Inter', fontSize: 13, color: black),
                       ),
@@ -3665,7 +3678,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.12,
                       ),
                       Text(
-                        department,
+                        department.isNotEmpty ? department : 'N/A',
                         style: TextStyle(
                             fontFamily: 'Inter', fontSize: 13, color: black),
                       ),
@@ -3883,7 +3896,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.050,),
                   Text('Job Title',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                   SizedBox(width:size.width *  0.039,),
-                  Text(Positions.isNotEmpty? Positions:'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ? Positions : 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -4220,7 +4242,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.160,
                   ),
                   Text(
-                    employeeName,
+                    employeeName.isNotEmpty ? employeeName : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -4244,7 +4266,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.12,
                   ),
                   Text(
-                    Positions,
+                    Positions.isNotEmpty ? Positions : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -4268,7 +4290,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.152,
                   ),
                   Text(
-                    badgeno,
+                    badgeno.isNotEmpty ? badgeno : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -4292,7 +4314,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.12,
                   ),
                   Text(
-                    department,
+                    department.isNotEmpty ? department: 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -4508,7 +4530,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.050,),
                   Text('Job Title',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
                   SizedBox(width:size.width *  0.038,),
-                  Text(Positions.isNotEmpty ? Positions :'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 16,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ?Positions : 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -4843,7 +4874,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.16,
                   ),
                   Text(
-                    employeeName,
+                    employeeName.isNotEmpty ? employeeName :'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -4867,7 +4898,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.12,
                   ),
                   Text(
-                    Positions,
+                    Positions.isNotEmpty ? Positions : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -4891,7 +4922,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.15,
                   ),
                   Text(
-                    badgeno,
+                    badgeno.isNotEmpty ? badgeno:'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -4915,7 +4946,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.12,
                   ),
                   Text(
-                    department,
+                    department.isNotEmpty ? department : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -5040,7 +5071,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Text(
-                        leave.reason ?? 'N/A',
+                        leave.reason ?? '',
                         style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
                         overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
                       ),
@@ -5451,7 +5482,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.158,
                       ),
                       Text(
-                        employeeName,
+                        employeeName.isNotEmpty ? employeeName : 'N/A',
                         style: TextStyle(
                             fontFamily: 'Inter', fontSize: 13, color: black),
                       ),
@@ -5475,7 +5506,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.149,
                       ),
                       Text(
-                        badgeno,
+                        badgeno.isNotEmpty ? badgeno : 'N/A',
                         style: TextStyle(
                             fontFamily: 'Inter', fontSize: 13, color: black),
                       ),
@@ -5499,7 +5530,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.116,
                       ),
                       Text(
-                        department,
+                        department.isNotEmpty ? badgeno : 'N/A',
                         style: TextStyle(
                             fontFamily: 'Inter', fontSize: 13, color: black),
                       ),
@@ -5552,7 +5583,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                         width: size.width * 0.078,
                       ),
                       Text(
-                        request?.destination ?? 'Unknown',
+                        request?.destination ?? '',
                         style: TextStyle(
                             fontFamily: 'Inter', fontSize: 13, color: black),
                       ),
@@ -6001,7 +6032,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.158,
                   ),
                   Text(
-                    employeeName,
+                    employeeName.isNotEmpty ? employeeName :'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -6025,7 +6056,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.15,
                   ),
                   Text(
-                    badgeno,
+                    badgeno.isNotEmpty ? badgeno : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -6049,7 +6080,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.117,
                   ),
                   Text(
-                    department,
+                    department.isNotEmpty ? department : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -6077,7 +6108,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       scrollDirection: Axis.horizontal,
                       child: Text(
                         Positions.isNotEmpty? Positions :  'N/A',
-                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
                         overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
                       ),
                     ),
@@ -6538,7 +6569,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.157,
                   ),
                   Text(
-                    employeeName,
+                    employeeName.isNotEmpty ? employeeName : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -6562,7 +6593,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.15,
                   ),
                   Text(
-                    badgeno,
+                    badgeno.isNotEmpty ? badgeno:'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -6586,7 +6617,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.12,
                   ),
                   Text(
-                    department,
+                    department.isNotEmpty ? department : 'N/A',
                     style: TextStyle(
                         fontFamily: 'Inter', fontSize: 13, color: black),
                   ),
@@ -6614,7 +6645,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       scrollDirection: Axis.horizontal,
                       child: Text(
                         Positions.isNotEmpty ? Positions : 'N/A',
-                        style: TextStyle(fontFamily: 'Inter', fontSize: 16, color: black),
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
                         overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
                       ),
                     ),
@@ -7062,13 +7093,13 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   Future<void> initializeData() async {
     // Wait for all data-fetching functions to complete
     await Future.wait([
-      fetchEmailNotifications(context),
-      fetchLeaveData(),
-      fetchTicketRequests(),
-      fetchUpdatedEmployeeInfo(context),
       fetchEmployeePersonalInfo(context),
       fetchEmployWorkInfo(context),
+      fetchLeaveData(),
       fetchLeaveDetails(context),
+      fetchTicketRequests(),
+      fetchEmailNotifications(context),
+      fetchUpdatedEmployeeInfo(context),
 
     ]);
 
@@ -7105,8 +7136,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   Future<bool> sendCancelEmail(String managerEmail, String employeeName) async {
     // Create an instance of the AWS SES client
     final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
-      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+      accessKey: 'AKIAQXPZCWE7WAE2226P', // Replace with your AWS access key
+      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your a
     );
 
     final ses = SES(
@@ -7141,8 +7172,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   Future<bool> ticketCancelEmail(String hrEmail, String employeeName) async {
     // Create an instance of the AWS SES client
     final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
-      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+      accessKey: 'AKIAQXPZCWE7WAE2226P',
+      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your AWS secret key
     );
 
     final ses = SES(
@@ -7223,8 +7254,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   Future<bool> approvedCancelEmail(String managerEmail, String employeeName) async {
     // Create an instance of the AWS SES client
     final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
-      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+      accessKey: 'AKIAQXPZCWE7WAE2226P',
+      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your AWS secret key
     );
 
     final ses = SES(
@@ -7259,8 +7290,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   Future<bool> ticketApprovedCancelEmail(String hrEmail , String employeeName) async {
     // Create an instance of the AWS SES client
     final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
-      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+      accessKey: 'AKIAQXPZCWE7WAE2226P',
+      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your AWS secret key
     );
 
     final ses = SES(
@@ -7341,9 +7372,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       print('Failed to send email to manager: $managerEmail');
                     }
                   }
+                  bool hrEmailSent = await sendCancelEmail('Hr-notification@adininworks.com', employeeName);
+                  if (hrEmailSent) {
+                    print('Email send to hrportal ');
+                  }else{
+                    print('Failed to send hrportal');
+                  }
                 } else {
                   _showAlertDialog('Failed', 'Failed to cancel leave request.');
                 }
+
               },
               child: Text("Yes", style: TextStyle(color: Colors.green)),
             ),
@@ -7401,6 +7439,12 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       print('Failed to send email to manager: $managerEmail');
                     }
                   }
+                  bool hrEmailSent = await approvedCancelEmail('Hr-notification@adininworks.com', employeeName);
+                  if (hrEmailSent) {
+                    print('Email send to hrportal');
+                  }else{
+                    print('Failed to send hrportal');
+                  }
                 } else {
                   // Show failure message for leave cancellation
                   _showAlertDialog('Failed', 'Failed to cancel Approved leave.');
@@ -7432,26 +7476,37 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
             TextButton(
               onPressed: () async {
                 Navigator.pop(context); // Close the dialog
+
                 // Proceed with cancellation
                 bool success = await updateTicketStatus(request);
                 Get.back();
 
                 if (success) {
-                  _showAlertDialog('Success', 'Ticket request cancelled Succesfully.');
-                  bool emailSent= await ticketCancelEmail(hrEmail, employeeName);
-                  if(emailSent){
-                    print('Email successfully sent to hr: $hrEmail');
-                    await updateEmailNotificationStatus(request.empID, 'Cancelled', 'Ticket request cancelled by ${employeeName}', hrEmail);
+                  _showAlertDialog('Success', 'Ticket request cancelled successfully.');
+
+                  // Send email to HR
+                  bool emailSent = await ticketCancelEmail(hrEmail, employeeName);
+                  if (emailSent) {
+                    print('Email successfully sent to HR: $hrEmail');
+                    await updateEmailNotificationStatus(request.empID,'Cancelled','Ticket request cancelled by $employeeName',hrEmail,);
+                  } else {
+                    print('Failed to send email to HR: $hrEmail');
                   }
-                  else {
-                    print('Failed to send email to hr: $hrEmail');
+
+                  // Notify HR portal
+                  bool hrEmailSent = await ticketCancelEmail('Hr-notification@adininworks.com', employeeName);
+                  if (hrEmailSent) {
+                    print('Email successfully sent to HR portal');
+                  } else {
+                    print('Failed to send email to HR portal');
                   }
                 } else {
-                  _showAlertDialog('Failed', 'Failed to cancelled ticket request.');
+                  _showAlertDialog('Failed', 'Failed to cancel ticket request.');
                 }
               },
               child: Text("Yes", style: TextStyle(color: Colors.green)),
             ),
+
           ],
         );
       },
@@ -7491,6 +7546,13 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   else {
                     print('Failed to send email to hr: $hrEmail');
                   }
+                  bool hrEmailSent = await ticketApprovedCancelEmail('Hr-notification@adininworks.com', employeeName);
+                  if (hrEmailSent) {
+                    print('Email successfully sent to HR portal');
+                  } else {
+                    print('Failed to send email to HR portal');
+                  }
+
                 } else {
                   _showAlertDialog('Failed', 'Failed to cancelled ticket request.');
                 }
@@ -7629,13 +7691,13 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
     // Define the necessary variables
     int lastCalculatedYear = currentYear;  // Initialize the lastCalculatedYear
-    int totalAnnualLeave = int.tryParse(annualLeave) ?? 0;
-    int totalSickLeave = int.tryParse(sickLeave) ?? 0;
+    int totalAnnualLeave = int.tryParse(annualLeave) ?? 14;
+    int totalSickLeave = int.tryParse(sickLeave) ?? 14;
     int totalHospitalisationLeave =  60;
-    int totalMaternityLeave = int.tryParse(materLeave) ?? 0;
-    int totalPaternityLeave = int.tryParse(paterLeave) ?? 0;
-    int totalMarriageLeave = int.tryParse(mrageLeave) ?? 0;
-    int totalCompassionateLeave = int.tryParse(compasLeave) ?? 0;
+    int totalMaternityLeave =  int.tryParse(materLeave) ?? 91;
+    int totalPaternityLeave =  int.tryParse(paterLeave) ?? 2;
+    int totalMarriageLeave =  int.tryParse(mrageLeave) ?? 1;
+    int totalCompassionateLeave =  int.tryParse(compasLeave) ?? 2;
     int unpaidAuthorize = 0;  // Initialize unpaidAuthorize
 
     // Check if the leave data needs to be reset for a new year
@@ -7645,8 +7707,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       totalSickLeave = int.tryParse(sickLeave) ?? 0;
       totalHospitalisationLeave = 60;
       totalMaternityLeave = int.tryParse(materLeave) ?? 0;
-      totalPaternityLeave = int.tryParse(paterLeave) ?? 0;
-      totalMarriageLeave = int.tryParse(mrageLeave) ?? 0;
+      totalPaternityLeave =  int.tryParse(paterLeave) ?? 0;
+      totalMarriageLeave =  int.tryParse(mrageLeave) ?? 0;
       totalCompassionateLeave = int.tryParse(compasLeave) ?? 0;
       unpaidAuthorize = 0;
       // Update the last calculated year
@@ -7906,32 +7968,43 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
               break;
           }
         }
-
         // Add unpaid authorize when all leave types are exhausted
+        // Add unpaid leave when all leave types are exhausted
         if (annualLeaveRemaining <= 0 && sickLeaveRemaining <= 0) {
-          // Condition 1: Annual or Sick Leave
-          if ((leave.leaveType == 'Annual Leave' || leave.leaveType == 'Sick Leave') &&
-              leave.empStatus == 'Pending' &&
+          if (leave.empStatus == 'Pending' &&
               leave.supervisorStatus == 'Approved' &&
               leave.managerStatus == 'Approved') {
-            unpaidAuthorize += leave.days?.toInt() ?? 0;
-          }
-          // Condition 2: Compassionate, Marriage, or Paternity Leave
-          if ((leave.leaveType == 'Compassionate Leave' && compassionateLeaveRemaining <= 0) ||
-              (leave.leaveType == 'Marriage Leave' && marriageLeaveRemaining <= 0) ||
-              (leave.leaveType == 'Paternity Leave' && paternityLeaveRemaining <= 0)) {
-            print('Leave Type: ${leave.leaveType}, Compassionate Leave Remaining: $compassionateLeaveRemaining');
-            if (leave.empStatus == 'Pending' &&
-                leave.supervisorStatus == 'Approved' &&
-                leave.managerStatus == 'Approved') {
-              print('Adding extra days to Unpaid Leave: ${leave.days}');
-              unpaidAuthorize += leave.days?.toInt() ?? 0;
-            } else {
-              print('Leave not approved or in pending status');
-            }
-          }
+            int approvedDays = leave.days?.toInt() ?? 0;
+            int unpaidDays = 0;
 
+            // Calculate unpaid days for Annual Leave or Sick Leave
+            if (leave.leaveType == 'Annual Leave' || leave.leaveType == 'Sick Leave') {
+              // Calculate deficits
+              int annualDeficit = annualLeaveTaken > totalAnnualLeave
+                  ? annualLeaveTaken - totalAnnualLeave
+                  : 0;
+
+              int sickDeficit = sickLeaveTaken > totalSickLeave
+                  ? sickLeaveTaken - totalSickLeave
+                  : 0;
+
+              // Only add unpaid days if there is an actual deficit
+              unpaidDays += annualDeficit;
+              unpaidDays += sickDeficit;
+            }
+
+            // Add unpaid days for other leave types directly
+            if ((leave.leaveType == 'Compassionate Leave' && compassionateLeaveRemaining <= 0) ||
+                (leave.leaveType == 'Marriage Leave' && marriageLeaveRemaining <= 0) ||
+                (leave.leaveType == 'Paternity Leave' && paternityLeaveRemaining <= 0)) {
+              unpaidDays += approvedDays;
+            }
+
+            // Ensure unpaidAuthorize is updated correctly
+            unpaidAuthorize += unpaidDays;
+          }
         }
+
 
       }
     }
@@ -8200,19 +8273,19 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 rows: filteredTicketRequests.map((request) {
                   int index = filteredTicketRequests.indexOf(request);
                   return DataRow(cells: [
-                    DataCell(Text('Rahul', style: phonerowTextStyle),
+                    DataCell(Text(employeeName.isNotEmpty ? employeeName : 'N/A', style: phonerowTextStyle),
                         onTap: () {
                           _showphoneTicketDialog(context, index, request!);
                         }),
-                    DataCell(Text('50598', style: phonerowTextStyle),
+                    DataCell(Text(badgeno.isNotEmpty ? badgeno : 'N/A', style: phonerowTextStyle),
                         onTap: () {
                           _showphoneTicketDialog(context, index, request!);
                         }),
-                    DataCell(Text('Welding', style: phonerowTextStyle),
+                    DataCell(Text(department.isNotEmpty ? department :'N/A', style: phonerowTextStyle),
                         onTap: () {
                           _showphoneTicketDialog(context, index, request!);
                         }),
-                    DataCell(Text('Trainer', style: phonerowTextStyle),
+                    DataCell(Text(Positions.isNotEmpty ? Positions : 'N/A', style: phonerowTextStyle),
                         onTap: () {
                           _showphoneTicketDialog(context, index, request!);
                         }),
@@ -8458,9 +8531,9 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     SizedBox(width: size.width* 0.180,),
                     employeeInfoCard(
                       context,
-                      doj,
-                      department,
-                      empType ,
+                      doj.isNotEmpty ? doj : 'N/A',
+                      department.isNotEmpty? department:'N/A',
+                      empType.isNotEmpty ? empType:'N/A',
                       size.width * 0.60,
                       size.height * 0.105,
                     ),
@@ -9278,7 +9351,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Welcome ${employeeName}',
+                    'Welcome ${employeeName.isNotEmpty ? employeeName:'N/A'}',
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width *
                           0.025, // Responsive font size
@@ -9385,7 +9458,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     width: size.width * 0.01,
                   ),
                   Text(
-                    employeeName,
+                    employeeName.isNotEmpty ? employeeName : 'N/A',
                     style: TextStyle(
                         color: Colors.blue,
                         fontFamily: 'Inter',
@@ -9402,7 +9475,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(
                     width: size.width * 0.053,
                   ),
-                  mobileInfoCard(context, doj, department, empType),
+                  mobileInfoCard(context, doj.isNotEmpty ? doj : 'N/A', department.isNotEmpty ? department : 'N/A', empType.isNotEmpty ? empType:'N/A'),
                 ],
               ),
               SizedBox(
@@ -9412,7 +9485,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 children: [
                   SizedBox(width: size.width * 0.08),
                   Text(
-                    empType,
+                    empType.isNotEmpty ? empType:'N/A',
                     style: TextStyle(
                         color: dashgrey,
                         fontFamily: 'Inter',
@@ -10045,8 +10118,7 @@ Widget tabemployeeInfoCard(BuildContext context, String joiningDate,  String dep
 }
 
 
-Widget mobileInfoCard(BuildContext context, String joinindate,
-    String department, String location) {
+Widget mobileInfoCard(BuildContext context, String joinindate, String department, String location){
   final Size size = MediaQuery.of(context).size;
   return Container(
     width: size.width * 0.9,
@@ -10182,9 +10254,8 @@ Widget mobileContainer(BuildContext context, String text, double font) {
   );
 }
 
-Widget phonePopContainer(BuildContext context, TextEditingController controller,
-    String text, double no,
-    {bool readonly = false}) {
+Widget phonePopContainer(BuildContext context, TextEditingController controller,String text, double no, {bool readonly = false}) {
+
   final Size size = MediaQuery.of(context).size;
   return Container(
     width: size.width * 0.59,

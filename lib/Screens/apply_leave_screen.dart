@@ -1003,15 +1003,18 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                   content: Text('Your leave application has been submitted.'),
                   onConfirm: () {
                     Get.back(); // Close dialog
-                    Get.off(DashBoardScreeen()); // Navigate to dashboard
+                  Get.off(() => DashBoardScreeen());// Navigate to dashboard
                   },
                 );
 
                 // Proceed with notifications and storing data in the background
                 Future.microtask(() async {
+                  // Notify Supervisor
                   if (applyToList.contains('Supervisor') && supervisorEmpID.isNotEmpty) {
                     _notifyUser(supervisorEmpID, leaveStatus, supervisorName);
                   }
+
+                  // Notify Manager
                   if (applyToList.contains('Manager') && managerEmpID.isNotEmpty) {
                     _notifyUser(managerEmpID, leaveStatus, managerName);
                   }
@@ -1023,13 +1026,21 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                       await storeEmailNotification(empId, _selectedLeaveType!, 'leave_no-reply@adininworks.com', supervisorEmail);
                     }
                   }
+
                   if (managerEmail != 'N/A') {
                     bool emailSent = await sendEmail(managerEmail, employeeName);
                     if (emailSent) {
                       await storeEmailNotification(empId, _selectedLeaveType!, 'leave_no-reply@adininworks.com', managerEmail);
                     }
                   }
+
+                  // Send common email to HR notification email
+                  bool hrEmailSent = await sendEmail('Hr-notification@adininworks.com', employeeName);
+                  if (hrEmailSent) {
+                    print('Email send to hrportal : ${hrEmailSent}');
+                  }
                 });
+
               } else {
                 // Show error dialog if submission failed
                 Get.defaultDialog(
@@ -1093,15 +1104,14 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   Future<bool> sendEmail(String managerEmail, String employeeName) async {
     // Create an instance of the AWS SES client
     final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7ZED5EI2A', // Replace with your AWS access key
-      secretKey: 'LJwP2fd40b8OZoY28/0iLWr5op3eDTUZK7ugNcD3', // Replace with your AWS secret key
+      accessKey: 'AKIAQXPZCWE7WAE2226P',
+      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5',
     );
 
     final ses = SES(
       region: 'ap-southeast-1', // e.g., 'us-east-1'
       credentials: awsCredentials,
     );
-
 
     final messageBody = 'Employee $employeeName applied leave request.\n'
         'You can view the details here: https://dev.dxtlxvdrz6jj5.amplifyapp.com';
@@ -1117,7 +1127,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
         ),
         source: 'leave_no-reply@adininworks.com', // Replace with a verified email address in SES
       );
-
       print('Email sent to $managerEmail');
       return true;
     } catch (e) {
@@ -2632,7 +2641,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                           SizedBox(
                             width: size.width * 0.087,
                           ),
-                          phoneContainer(context, badgeno),
+                          phoneContainer(context, badgeno.isNotEmpty?badgeno:'N/A'),
                           SizedBox(
                             width: size.width * 0.084,
                           ),
@@ -2648,7 +2657,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                           SizedBox(
                             width: size.width * 0.049,
                           ),
-                          phoneContainer(context, employeeName),
+                          phoneContainer(context, employeeName.isNotEmpty ? employeeName:'N/A'),
                         ],
                       ),
                       SizedBox(
@@ -2671,7 +2680,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                           SizedBox(
                             width: size.width * 0.075,
                           ),
-                          phoneContainer(context, department),
+                          phoneContainer(context, department.isNotEmpty ? department:'N/A'),
                           SizedBox(
                             width: size.width * 0.075,
                           ),
@@ -2687,7 +2696,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                           SizedBox(
                             width: size.width * 0.012,
                           ),
-                          phoneContainer(context, position),
+                          phoneContainer(context, position.isNotEmpty ? position:'N/A'),
                         ],
                       ),
                       SizedBox(
@@ -3386,7 +3395,7 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  Get.off(DashBoardScreeen());
+                                Get.back();
                                 },
                                 style: OutlinedButton.styleFrom(
                                   minimumSize: Size(
