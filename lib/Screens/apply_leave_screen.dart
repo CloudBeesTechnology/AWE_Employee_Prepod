@@ -50,6 +50,14 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   String paterLeave = '';
   String materLeave = '';
 
+  String annualLeaveDate='3/12/2024';
+  String sickLeaveDate='6/12/2024';
+  String paterLeaveDate='11/12/2024';
+  String materLeaveDate='3/12/2024';
+  String compasLeaveDate='27/11/2024';
+  String mrageLeaveDate='3/12/2024';
+
+
 
 
 
@@ -1086,8 +1094,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   }
 
 
-
-
   Future<void> uploadImage() async {
     // Select a file from the device with allowed file extensions
     final result = await FilePicker.platform.pickFiles(
@@ -1151,8 +1157,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
       }
     });
   }
-
-
 
   //NAV BAR METHODS
   Future<void> _confirmSignOut(BuildContext context) async {
