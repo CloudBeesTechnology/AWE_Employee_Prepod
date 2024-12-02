@@ -4,7 +4,6 @@ import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:awe_project/Components/helper_class.dart';
 import 'package:awe_project/globals/my_colors.dart';
-import 'package:aws_ses_api/email-2010-12-01.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -1020,25 +1019,11 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
                   }
 
                   // Send emails and store email notifications
-                  if (supervisorEmail != 'N/A') {
-                    bool emailSent = await sendEmail(supervisorEmail, employeeName);
-                    if (emailSent) {
-                      await storeEmailNotification(empId, _selectedLeaveType!, 'leave_no-reply@adininworks.com', supervisorEmail);
-                    }
-                  }
 
-                  if (managerEmail != 'N/A') {
-                    bool emailSent = await sendEmail(managerEmail, employeeName);
-                    if (emailSent) {
-                      await storeEmailNotification(empId, _selectedLeaveType!, 'leave_no-reply@adininworks.com', managerEmail);
-                    }
-                  }
+
 
                   // Send common email to HR notification email
-                  bool hrEmailSent = await sendEmail('Hr-notification@adininworks.com', employeeName);
-                  if (hrEmailSent) {
-                    print('Email send to hrportal : ${hrEmailSent}');
-                  }
+
                 });
 
               } else {
@@ -1101,39 +1086,6 @@ class _ApplyLeaveScreenState extends State<ApplyLeaveScreen> {
   }
 
 
-  Future<bool> sendEmail(String managerEmail, String employeeName) async {
-    // Create an instance of the AWS SES client
-    final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7WAE2226P',
-      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5',
-    );
-
-    final ses = SES(
-      region: 'ap-southeast-1', // e.g., 'us-east-1'
-      credentials: awsCredentials,
-    );
-
-    final messageBody = 'Employee $employeeName applied leave request.\n'
-        'You can view the details here: https://dev.dxtlxvdrz6jj5.amplifyapp.com';
-    final subject = 'Leave request Notification';
-
-    try {
-      // Send an email to the manager's email
-      await ses.sendEmail(
-        destination: Destination(toAddresses: [managerEmail]),
-        message: Message(
-          subject: Content(data: subject),
-          body: Body(text: Content(data: messageBody)),
-        ),
-        source: 'leave_no-reply@adininworks.com', // Replace with a verified email address in SES
-      );
-      print('Email sent to $managerEmail');
-      return true;
-    } catch (e) {
-      print('Error sending email: $e');
-      return false;
-    }
-  }
 
 
   Future<void> uploadImage() async {

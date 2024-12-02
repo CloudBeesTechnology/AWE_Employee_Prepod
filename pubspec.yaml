@@ -48,7 +48,6 @@ dependencies:
   get_storage: ^2.1.1
   file_picker: ^5.5.0
   http: ^1.2.2
-  aws_ses_api: ^2.0.0
 
 
 

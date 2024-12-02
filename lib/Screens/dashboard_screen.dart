@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:awe_project/globals/employe_table.dart';
-import 'package:aws_ses_api/email-2010-12-01.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:awe_project/Components/helper_class.dart';
@@ -2747,17 +2746,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                     print('Notifying HR: $hr');
                     await _notifyUser(hr, 'Ticket request pending');
                   }
-
-                  if (hrEmail != 'N/A') {
-                    bool emailSent = await sendTicketEmail(hrEmail, 'Ticket request submitted');
-                    if (emailSent) {
-                      await storeTicketEmailNotification(empId,  'leave_no-reply@adininworks.com', hrEmail);
-                    }
-                  }
-                  bool hrEmailSent = await sendTicketEmail('Hr-notification@adininworks.com', employeeName);
-                  if (hrEmailSent) {
-                    print('Email send to hrportal : ${hrEmailSent}');
-                  }
                 },
               );
             } else {
@@ -2775,41 +2763,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
     );
   }
 
-  Future<bool> sendTicketEmail(String hrEmail, String employeeName) async {
-    // Create an instance of the AWS SES client
-    final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7WAE2226P',
-      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your AWS
-    );
 
-    final ses = SES(
-      region: 'ap-southeast-1', // e.g., 'us-east-1'
-      credentials: awsCredentials,
-    );
-
-
-    final messageBody = 'Employee $employeeName applied ticket request.\n'
-        'You can view the details here: https://dev.dxtlxvdrz6jj5.amplifyapp.com';
-    final subject = 'Ticket request Notification';
-
-    try {
-      // Send an email to the manager's email
-      await ses.sendEmail(
-        destination: Destination(toAddresses: [hrEmail]),
-        message: Message(
-          subject: Content(data: subject),
-          body: Body(text: Content(data: messageBody)),
-        ),
-        source: 'leave_no-reply@adininworks.com', // Replace with a verified email address in SES
-      );
-
-      print('Email sent to $hrEmail');
-      return true;
-    } catch (e) {
-      print('Error sending email: $e');
-      return false;
-    }
-  }
 
   Future<void> storeTicketEmailNotification(String empID, String senderEmail, String recipientEmail) async {
     final emailNotification = EmailNotifi(
@@ -3428,7 +3382,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(width:size.width *  0.057,),
                       Text('Job Title',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                       SizedBox(width:size.width *  0.058,),
-                      Text(Positions.isNotEmpty ? Positions :'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            Positions.isNotEmpty ? Positions : 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: size.height * 0.014,),
@@ -3629,10 +3592,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                       SizedBox(
                         width: size.width * 0.12,
                       ),
-                      Text(
-                        Positions.isNotEmpty ? Positions:'N/A',
-                        style: TextStyle(
-                            fontFamily: 'Inter', fontSize: 13, color: black),
+                      Flexible(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            Positions.isNotEmpty ? Positions : 'N/A',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
+                            overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -4071,7 +4039,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.061,),
                   Text('Job Title',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                   SizedBox(width:size.width *  0.058,),
-                  Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ? Positions : 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -4265,10 +4242,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(
                     width: size.width * 0.12,
                   ),
-                  Text(
-                    Positions.isNotEmpty ? Positions : 'N/A',
-                    style: TextStyle(
-                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ? Positions : 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -4704,7 +4686,16 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(width:size.width *  0.060,),
                   Text('Job Title',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
                   SizedBox(width:size.width *  0.056,),
-                  Text(Positions.isNotEmpty ? Positions: 'N/A',style: TextStyle(fontFamily: 'Inter',fontSize: 14,color: black),),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ? Positions : 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: size.height * 0.014,),
@@ -4897,10 +4888,15 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   SizedBox(
                     width: size.width * 0.12,
                   ),
-                  Text(
-                    Positions.isNotEmpty ? Positions : 'N/A',
-                    style: TextStyle(
-                        fontFamily: 'Inter', fontSize: 13, color: black),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        Positions.isNotEmpty ? Positions : 'N/A',
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: black),
+                        overflow: TextOverflow.ellipsis, // Optional, to truncate the text with an ellipsis if it's too long
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -7133,77 +7129,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
   //Notification part for cancelling leave and ticket
 
-  Future<bool> sendCancelEmail(String managerEmail, String employeeName) async {
-    // Create an instance of the AWS SES client
-    final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7WAE2226P', // Replace with your AWS access key
-      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your a
-    );
-
-    final ses = SES(
-      region: 'ap-southeast-1', // e.g., 'us-east-1'
-      credentials: awsCredentials,
-    );
 
 
-    final messageBody = 'Employee $employeeName has canceled their leave request.\n'
-        'You can view the details here: https://dev.dxtlxvdrz6jj5.amplifyapp.com';
-    final subject = 'Leave Cancellation Notification';
-
-    try {
-      // Send an email to the manager's email
-      await ses.sendEmail(
-        destination: Destination(toAddresses: [managerEmail]),
-        message: Message(
-          subject: Content(data: subject),
-          body: Body(text: Content(data: messageBody)),
-        ),
-        source: 'leave_no-reply@adininworks.com', // Replace with a verified email address in SES
-      );
-
-      print('Email sent to $managerEmail');
-      return true;
-    } catch (e) {
-      print('Error sending email: $e');
-      return false;
-    }
-  }
-
-  Future<bool> ticketCancelEmail(String hrEmail, String employeeName) async {
-    // Create an instance of the AWS SES client
-    final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7WAE2226P',
-      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your AWS secret key
-    );
-
-    final ses = SES(
-      region: 'ap-southeast-1', // e.g., 'us-east-1'
-      credentials: awsCredentials,
-    );
-
-
-    final messageBody = 'Employee $employeeName has canceled their ticket request.\n'
-        'You can view the details here: https://dev.dxtlxvdrz6jj5.amplifyapp.com';
-    final subject = 'Ticket Cancellation Notification';
-
-    try {
-      // Send an email to the manager's email
-      await ses.sendEmail(
-        destination: Destination(toAddresses: [hrEmail]),
-        message: Message(
-          subject: Content(data: subject),
-          body: Body(text: Content(data: messageBody)),
-        ),
-        source: 'leave_no-reply@adininworks.com', // Replace with a verified email address in SES
-      );
-
-      print('Email sent to $hrEmail');
-      return true;
-    } catch (e) {
-      print('Error sending email: $e');
-      return false;
-    }
-  }
 
   Future<void> updateEmailNotificationStatus( String empID,String newStatus, String newMessage, String recipientEmail) async {
     try {
@@ -7251,77 +7178,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
   }
 
 
-  Future<bool> approvedCancelEmail(String managerEmail, String employeeName) async {
-    // Create an instance of the AWS SES client
-    final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7WAE2226P',
-      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your AWS secret key
-    );
-
-    final ses = SES(
-      region: 'ap-southeast-1', // e.g., 'us-east-1'
-      credentials: awsCredentials,
-    );
 
 
-    final messageBody = 'Employee $employeeName has canceled their approved leave.\n'
-        'You can view the details here: https://dev.dxtlxvdrz6jj5.amplifyapp.com';
-    final subject = 'Approved Leave Cancellation Notification';
-
-    try {
-      // Send an email to the manager's email
-      await ses.sendEmail(
-        destination: Destination(toAddresses: [managerEmail]),
-        message: Message(
-          subject: Content(data: subject),
-          body: Body(text: Content(data: messageBody)),
-        ),
-        source: 'leave_no-reply@adininworks.com', // Replace with a verified email address in SES
-      );
-
-      print('Email sent to $managerEmail');
-      return true;
-    } catch (e) {
-      print('Error sending email: $e');
-      return false;
-    }
-  }
-
-  Future<bool> ticketApprovedCancelEmail(String hrEmail , String employeeName) async {
-    // Create an instance of the AWS SES client
-    final awsCredentials = AwsClientCredentials(
-      accessKey: 'AKIAQXPZCWE7WAE2226P',
-      secretKey: 'b3VebOtGPOLMrQuJIpQYb6EPL0luwhfhaCiN+sr5', // Replace with your AWS secret key
-    );
-
-    final ses = SES(
-      region: 'ap-southeast-1', // e.g., 'us-east-1'
-      credentials: awsCredentials,
-    );
-
-
-    final messageBody = 'Employee $employeeName has canceled their approved leave.\n'
-        'You can view the details here: https://dev.dxtlxvdrz6jj5.amplifyapp.com';
-    final subject = 'Approved ticket Cancellation Notification';
-
-    try {
-      // Send an email to the manager's email
-      await ses.sendEmail(
-        destination: Destination(toAddresses: [hrEmail]),
-        message: Message(
-          subject: Content(data: subject),
-          body: Body(text: Content(data: messageBody)),
-        ),
-        source: 'leave_no-reply@adininworks.com', // Replace with a verified email address in SES
-      );
-
-      print('Email sent to $hrEmail');
-      return true;
-    } catch (e) {
-      print('Error sending email: $e');
-      return false;
-    }
-  }
 
   void _showPendingCancelDialog(BuildContext context, LeaveStatus leave) {
     final managerEmail = box.read('managerEmail') ?? 'N/A';
@@ -7353,31 +7211,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                   CalculateLeaveData();
 
                   // Send cancellation emails and update EmailNotifi
-                  if (leave.applyTo!.contains('Supervisor') && supervisorEmail != 'N/A') {
-                    bool emailSent = await sendCancelEmail(supervisorEmail, employeeName);
-                    if (emailSent) {
-                      print('Email successfully sent to supervisor: $supervisorEmail');
-                      await updateEmailNotificationStatus(leave.empID,  'Cancelled', 'Leave request cancelled by ${employeeName}',supervisorEmail);
-                    } else {
-                      print('Failed to send email to supervisor: $supervisorEmail');
-                    }
-                  }
 
-                  if (leave.applyTo!.contains('Manager') && managerEmail != 'N/A') {
-                    bool emailSent = await sendCancelEmail(managerEmail, employeeName);
-                    if (emailSent) {
-                      print('Email successfully sent to manager: $managerEmail');
-                      await updateEmailNotificationStatus(leave.empID,  'Cancelled','Leave request cancelled by ${employeeName}',managerEmail);
-                    } else {
-                      print('Failed to send email to manager: $managerEmail');
-                    }
-                  }
-                  bool hrEmailSent = await sendCancelEmail('Hr-notification@adininworks.com', employeeName);
-                  if (hrEmailSent) {
-                    print('Email send to hrportal ');
-                  }else{
-                    print('Failed to send hrportal');
-                  }
                 } else {
                   _showAlertDialog('Failed', 'Failed to cancel leave request.');
                 }
@@ -7418,33 +7252,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 if (success) {
                   _showAlertDialog('Success', 'Approved leave cancelled Succesfully.');
                   CalculateLeaveData();
-
-                  if (leave.applyTo!.contains('Supervisor') && supervisorEmail != 'N/A') {
-                    bool emailSent = await approvedCancelEmail(supervisorEmail,employeeName);
-                    if (emailSent) {
-                      print('Email successfully sent to supervisor: $supervisorEmail');
-                      await updateEmailNotificationStatus(leave.empID,  'Cancelled', 'Approved leave cancelled by ${employeeName}',supervisorEmail);
-                    } else {
-                      print('Failed to send email to supervisor: $supervisorEmail');
-                    }
-                  }
-
-                  // Check if email should be sent to the manager
-                  if (leave.applyTo!.contains('Manager') && managerEmail != 'N/A') {
-                    bool emailSent = await approvedCancelEmail(managerEmail,employeeName);
-                    if (emailSent) {
-                      print('Email successfully sent to manager: $managerEmail');
-                      await updateEmailNotificationStatus(leave.empID,  'Cancelled','Approved leave cancelled by ${employeeName}',managerEmail);
-                    } else {
-                      print('Failed to send email to manager: $managerEmail');
-                    }
-                  }
-                  bool hrEmailSent = await approvedCancelEmail('Hr-notification@adininworks.com', employeeName);
-                  if (hrEmailSent) {
-                    print('Email send to hrportal');
-                  }else{
-                    print('Failed to send hrportal');
-                  }
                 } else {
                   // Show failure message for leave cancellation
                   _showAlertDialog('Failed', 'Failed to cancel Approved leave.');
@@ -7484,22 +7291,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 if (success) {
                   _showAlertDialog('Success', 'Ticket request cancelled successfully.');
 
-                  // Send email to HR
-                  bool emailSent = await ticketCancelEmail(hrEmail, employeeName);
-                  if (emailSent) {
-                    print('Email successfully sent to HR: $hrEmail');
-                    await updateEmailNotificationStatus(request.empID,'Cancelled','Ticket request cancelled by $employeeName',hrEmail,);
-                  } else {
-                    print('Failed to send email to HR: $hrEmail');
-                  }
-
-                  // Notify HR portal
-                  bool hrEmailSent = await ticketCancelEmail('Hr-notification@adininworks.com', employeeName);
-                  if (hrEmailSent) {
-                    print('Email successfully sent to HR portal');
-                  } else {
-                    print('Failed to send email to HR portal');
-                  }
                 } else {
                   _showAlertDialog('Failed', 'Failed to cancel ticket request.');
                 }
@@ -7535,23 +7326,8 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
                 // Proceed with cancellation
                 bool success = await updateTicketStatus(request);
                 Get.back();
-
                 if (success) {
                   _showAlertDialog('Success', 'Approved Ticket request cancelled Succesfully.');
-                  bool emailSent= await ticketApprovedCancelEmail(hrEmail, employeeName);
-                  if(emailSent){
-                    print('Email successfully sent to hr: $hrEmail');
-                    await updateEmailNotificationStatus(request.empID, 'Cancelled', ' Approved Ticket request cancelled by ${employeeName}', hrEmail);
-                  }
-                  else {
-                    print('Failed to send email to hr: $hrEmail');
-                  }
-                  bool hrEmailSent = await ticketApprovedCancelEmail('Hr-notification@adininworks.com', employeeName);
-                  if (hrEmailSent) {
-                    print('Email successfully sent to HR portal');
-                  } else {
-                    print('Failed to send email to HR portal');
-                  }
 
                 } else {
                   _showAlertDialog('Failed', 'Failed to cancelled ticket request.');
@@ -8346,7 +8122,6 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
       padding: EdgeInsets.all(16.0),
     );
   }
-
 
 
   @override

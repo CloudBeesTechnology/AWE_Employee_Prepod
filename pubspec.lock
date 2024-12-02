@@ -137,14 +137,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.3"
-  aws_ses_api:
-    dependency: "direct main"
-    description:
-      name: aws_ses_api
-      sha256: fb5953b63ad1499d39a684d8a5b83be58e5e7084849ddeb5ac8f9090718c02d3
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   aws_signature_v4:
     dependency: transitive
     description:
@@ -632,14 +624,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
-  shared_aws_api:
-    dependency: transitive
-    description:
-      name: shared_aws_api
-      sha256: "6a6eb57d422d5a4b09c6f65703dd9be90d5a0d7a6fa284762139e5c0dea19136"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   shelf:
     dependency: transitive
     description:
