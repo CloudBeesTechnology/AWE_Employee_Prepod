@@ -6829,7 +6829,7 @@ class _DashBoardScreeenState extends State<DashBoardScreeen> {
 
       final request = ModelQueries.list(EmpWorkInfo.classType);
       final response = await Amplify.API.query(request: request).response;
-      // print(response);
+      print(response);
 
       if (response.errors.isNotEmpty) {
         print('Errors: ${response.errors}');
